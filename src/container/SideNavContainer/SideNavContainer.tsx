@@ -44,7 +44,13 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
             >
               Overview
             </Nav.Item>
-            <Dropdown eventKey={DANCER_EVENT_KEY} title="Dancer" icon={<Icon icon="magic" />} placement="rightStart">
+            <Dropdown
+              eventKey={DANCER_EVENT_KEY}
+              title="Dancer"
+              icon={<Icon icon="magic" />}
+              placement="rightStart"
+              trigger="hover"
+            >
               <Dropdown.Item eventKey={NEW_DANCER_EVENT_KEY} active={checkActive(NEW_DANCER_EVENT_KEY)}>
                 New Dancer
               </Dropdown.Item>
@@ -57,6 +63,7 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
               title="Session"
               icon={<Icon icon="gear-circle" />}
               placement="rightStart"
+              trigger="hover"
             >
               <Dropdown.Item eventKey={NEW_SESSION_EVENT_KEY} active={checkActive(NEW_SESSION_EVENT_KEY)}>
                 New Session

@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
-import 'rsuite/dist/styles/rsuite-dark.css';
 import AuthenticatedContainer from './container/AuthenticatedContainer';
+
+import 'rsuite/dist/styles/rsuite-dark.css';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <AuthenticatedContainer />
     </div>
   );
