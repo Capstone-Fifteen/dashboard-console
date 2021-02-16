@@ -1,71 +1,51 @@
 import React from 'react';
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import moment from 'moment';
+import { takeRight } from 'lodash';
+import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
 
-const RawDataLineChart: React.FunctionComponent = () => {
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+interface Props {
+  data: any[];
+  type: 'accelerometer' | 'gyroscope';
+}
+
+const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
+  const graphData =
+    data &&
+    data.map((item) => ({
+      ...item,
+      created_at: moment(item['created_at']).format('LTS'),
+    }));
+
+  const extractLineData = () => {
+    if (type === 'accelerometer') {
+      return ACCELEROMETER_READING.map((reading, index) => (
+        <Line type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+      ));
+    }
+    return GYROSCOPE_READING.map((reading, index) => (
+      <Line type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+    ));
+  };
 
   return (
     <LineChart
-      data={data}
+      data={takeRight(graphData, 3)}
       width={500}
       height={300}
       margin={{
-        top: 5,
+        top: 10,
         right: 30,
         left: 20,
         bottom: 5,
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="created_at" />
       <YAxis />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+      {extractLineData()}
     </LineChart>
   );
 };

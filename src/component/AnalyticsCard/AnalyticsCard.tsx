@@ -5,7 +5,12 @@ import './AnalyticsCard.css';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
 
-const AnalyticsCard: React.FunctionComponent<any> = () => {
+interface Props {
+  rawData: any[];
+  predictedData: any[];
+}
+
+const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
   return (
     <Panel bordered>
       <div className="sectionContainer">
@@ -48,14 +53,14 @@ const AnalyticsCard: React.FunctionComponent<any> = () => {
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Accelerometer Reading</span>
-          <RawDataLineChart />
+          <RawDataLineChart data={rawData} type="accelerometer"/>
         </div>
       </div>
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Gyroscope Reading</span>
-          <RawDataLineChart />
+          <RawDataLineChart data={rawData} type="gyroscope" />
         </div>
       </div>
     </Panel>

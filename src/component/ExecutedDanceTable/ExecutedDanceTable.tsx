@@ -16,7 +16,7 @@ const ExecutedDanceTable: React.FunctionComponent<any> = () => {
   const { Column, HeaderCell, Cell } = Table;
 
   return (
-    <Table data={data} width={300} height={200}>
+    <Table data={data} width={300} height={200} style={{ marginTop: 10 }}>
       <Column align="center" width={150}>
         <HeaderCell>Dance Move</HeaderCell>
         <Cell dataKey="move" />
