@@ -4,6 +4,7 @@ import { Container, Content, Header } from 'rsuite';
 import { useSubscription } from '@apollo/client';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
+import DashboardContainer from '../DashboardContainer';
 
 const AuthenticatedContainer = () => {
   const { data: rawData } = useSubscription(RAW_DATA_SUBSCRIPTION);
@@ -16,7 +17,9 @@ const AuthenticatedContainer = () => {
         <Header>
           <h2>Dashboard</h2>
         </Header>
-        <Content>Hello World</Content>
+        <Content>
+          <DashboardContainer />
+        </Content>
       </Container>
     </Container>
   );
