@@ -53,7 +53,7 @@ const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Accelerometer Reading</span>
-          <RawDataLineChart data={rawData} type="accelerometer"/>
+          <RawDataLineChart data={rawData} type="accelerometer" />
         </div>
       </div>
       <Divider />

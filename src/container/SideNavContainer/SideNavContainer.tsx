@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown, Icon, Nav, Navbar, Sidebar, Sidenav } from 'rsuite';
+import { Link } from 'react-router-dom';
 import {
   ALL_DANCER_EVENT_KEY,
   DANCER_EVENT_KEY,
@@ -10,6 +11,8 @@ import {
   PAST_SESSION_EVENT_KEY,
   SESSION_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
+import ROUTES from '../../constant/Routes';
+
 import './SideNavContainer.css';
 
 const SideNavContainer: React.FunctionComponent<any> = () => {
@@ -34,6 +37,8 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
               eventKey={DASHBOARD_EVENT_KEY}
               active={checkActive(DASHBOARD_EVENT_KEY)}
               icon={<Icon icon="dashboard" />}
+              componentClass={Link}
+              to={ROUTES.DASHBOARD}
             >
               Dashboard
             </Nav.Item>
@@ -41,6 +46,8 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
               eventKey={OVERVIEW_EVENT_KEY}
               active={checkActive(OVERVIEW_EVENT_KEY)}
               icon={<Icon icon="line-chart" />}
+              componentClass={Link}
+              to={ROUTES.OVERVIEW}
             >
               Overview
             </Nav.Item>
@@ -51,10 +58,20 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
               placement="rightStart"
               trigger="hover"
             >
-              <Dropdown.Item eventKey={NEW_DANCER_EVENT_KEY} active={checkActive(NEW_DANCER_EVENT_KEY)}>
+              <Dropdown.Item
+                eventKey={NEW_DANCER_EVENT_KEY}
+                active={checkActive(NEW_DANCER_EVENT_KEY)}
+                componentClass={Link}
+                to={ROUTES.DANCER_NEW}
+              >
                 New Dancer
               </Dropdown.Item>
-              <Dropdown.Item eventKey={ALL_DANCER_EVENT_KEY} active={checkActive(ALL_DANCER_EVENT_KEY)}>
+              <Dropdown.Item
+                eventKey={ALL_DANCER_EVENT_KEY}
+                active={checkActive(ALL_DANCER_EVENT_KEY)}
+                componentClass={Link}
+                to={ROUTES.DANCER_NEW}
+              >
                 All Dancers
               </Dropdown.Item>
             </Dropdown>
@@ -65,10 +82,20 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
               placement="rightStart"
               trigger="hover"
             >
-              <Dropdown.Item eventKey={NEW_SESSION_EVENT_KEY} active={checkActive(NEW_SESSION_EVENT_KEY)}>
+              <Dropdown.Item
+                eventKey={NEW_SESSION_EVENT_KEY}
+                active={checkActive(NEW_SESSION_EVENT_KEY)}
+                componentClass={Link}
+                to={ROUTES.SESSION_NEW}
+              >
                 New Session
               </Dropdown.Item>
-              <Dropdown.Item eventKey={PAST_SESSION_EVENT_KEY} active={checkActive(PAST_SESSION_EVENT_KEY)}>
+              <Dropdown.Item
+                eventKey={PAST_SESSION_EVENT_KEY}
+                active={checkActive(PAST_SESSION_EVENT_KEY)}
+                componentClass={Link}
+                to={ROUTES.SESSION_ALL}
+              >
                 Past Sessions
               </Dropdown.Item>
             </Dropdown>
