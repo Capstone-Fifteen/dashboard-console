@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Dropdown, Icon, Nav, Navbar, Sidebar, Sidenav } from 'rsuite';
-import './SideNavContainer.css';
 import {
   ALL_DANCER_EVENT_KEY,
   DANCER_EVENT_KEY,
@@ -11,6 +10,7 @@ import {
   PAST_SESSION_EVENT_KEY,
   SESSION_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
+import './SideNavContainer.css';
 
 const SideNavContainer: React.FunctionComponent<any> = () => {
   const [expand, setExpand] = useState(true);
@@ -20,7 +20,7 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
   const checkActive = (eventKey: string) => selectedPanel === eventKey;
 
   return (
-    <Sidebar style={{ display: 'flex', flexDirection: 'column' }} width={expand ? 260 : 56} collapsible>
+    <Sidebar className="sideBarContainer" width={expand ? 260 : 56} collapsible>
       <Sidenav expanded={expand} appearance="subtle" onSelect={(eventKey) => setSelectedPanel(eventKey)}>
         <Sidenav.Header>
           <div className="headerContainer">
@@ -40,14 +40,14 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
             <Nav.Item
               eventKey={OVERVIEW_EVENT_KEY}
               active={checkActive(OVERVIEW_EVENT_KEY)}
-              icon={<Icon icon="group" />}
+              icon={<Icon icon="line-chart" />}
             >
               Overview
             </Nav.Item>
             <Dropdown
               eventKey={DANCER_EVENT_KEY}
               title="Dancer"
-              icon={<Icon icon="magic" />}
+              icon={<Icon icon="user" />}
               placement="rightStart"
               trigger="hover"
             >
@@ -61,7 +61,7 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
             <Dropdown
               eventKey={SESSION_EVENT_KEY}
               title="Session"
-              icon={<Icon icon="gear-circle" />}
+              icon={<Icon icon="music" />}
               placement="rightStart"
               trigger="hover"
             >

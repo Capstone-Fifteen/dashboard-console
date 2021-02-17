@@ -20,17 +20,17 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   const extractLineData = () => {
     if (type === 'accelerometer') {
       return ACCELEROMETER_READING.map((reading, index) => (
-        <Line type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+        <Line key={reading} type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
       ));
     }
     return GYROSCOPE_READING.map((reading, index) => (
-      <Line type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+      <Line key={reading} type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
     ));
   };
 
   return (
     <LineChart
-      data={takeRight(graphData, 3)}
+      data={takeRight(graphData, 5)}
       width={500}
       height={300}
       margin={{

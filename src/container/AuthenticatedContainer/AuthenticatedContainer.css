@@ -1,0 +1,8 @@
+.sideNavAffixContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  z-index: 10;
+  height: 100%;
+}
