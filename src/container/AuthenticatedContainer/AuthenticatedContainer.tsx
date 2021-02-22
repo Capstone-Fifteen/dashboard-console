@@ -1,21 +1,17 @@
 import React from 'react';
 import SideNavContainer from '../SideNavContainer';
-import { Affix, Container, Content, Header } from 'rsuite';
+import { Affix, Container, Content } from 'rsuite';
 import { Switch, Route } from 'react-router-dom';
 import DashboardContainer from '../DashboardContainer';
-import './AuthenticatedContainer.css';
 import ROUTES from '../../constant/Routes';
 
 const AuthenticatedContainer = () => {
   return (
     <Container>
-      <Affix classPrefix="sideNavAffixContainer">
+      <Affix>
         <SideNavContainer />
       </Affix>
       <Container>
-        <Header>
-          <h2>Dashboard</h2>
-        </Header>
         <Content>
           <Switch>
             <Route path={ROUTES.DASHBOARD}>

@@ -36,16 +36,16 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
             <Nav.Item
               eventKey={DASHBOARD_EVENT_KEY}
               active={checkActive(DASHBOARD_EVENT_KEY)}
-              icon={<Icon icon="dashboard" />}
+              icon={<Icon icon="line-chart" />}
               componentClass={Link}
               to={ROUTES.DASHBOARD}
             >
-              Dashboard
+              Live
             </Nav.Item>
             <Nav.Item
               eventKey={OVERVIEW_EVENT_KEY}
               active={checkActive(OVERVIEW_EVENT_KEY)}
-              icon={<Icon icon="line-chart" />}
+              icon={<Icon icon="dashboard" />}
               componentClass={Link}
               to={ROUTES.OVERVIEW}
             >
