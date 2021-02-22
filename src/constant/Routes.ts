@@ -6,6 +6,8 @@ const ROUTES = {
   DANCER_ALL: '/dancer',
   SESSION_NEW: '/session',
   SESSION_ALL: '/session',
+  DEVICE_NEW: '/device/new',
+  DEVICE_ALL: '/device',
 };
 
 export default ROUTES;

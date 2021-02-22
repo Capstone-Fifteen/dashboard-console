@@ -7,3 +7,7 @@ export const authenticationModel = Schema.Model({
     .isRequired('Required field.')
     .addRule((value) => value === process.env.REACT_APP_GRAPHQL_SECRET, 'Incorrect admin secret.'),
 });
+
+export const deviceAddModel = Schema.Model({
+  deviceName: StringType().isRequired(),
+});

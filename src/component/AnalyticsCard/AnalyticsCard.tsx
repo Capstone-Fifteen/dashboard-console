@@ -1,9 +1,8 @@
 import React from 'react';
 import { Divider, Panel } from 'rsuite';
-
-import './AnalyticsCard.css';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
+import './AnalyticsCard.css';
 
 interface Props {
   rawData: any[];
