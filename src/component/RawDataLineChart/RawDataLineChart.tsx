@@ -31,9 +31,9 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   return (
     <ResponsiveContainer width={500} height={300}>
       <LineChart
-        data={takeRight(graphData, 5)}
+        data={takeRight(graphData, 30)}
         margin={{
-          top: 10,
+          top: 5,
           right: 30,
           left: 20,
           bottom: 5,

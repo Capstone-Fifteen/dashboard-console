@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import randomColor from 'randomcolor';
+import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 
 const AccuracyBarChart: React.FunctionComponent<any> = () => {
   const data = [
@@ -35,8 +35,8 @@ const AccuracyBarChart: React.FunctionComponent<any> = () => {
         <YAxis type="category" dataKey="name" />
         <Tooltip />
         <Bar dataKey="accuracy">
-          {data.map(() => (
-            <Cell fill={randomColor({ hue: 'blue' })} />
+          {data.map((_, index) => (
+            <Cell fill={LINE_COLOR_PALETTE[index]} />
           ))}
         </Bar>
       </BarChart>
