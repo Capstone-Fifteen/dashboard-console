@@ -17,7 +17,7 @@ const DeviceAddContainer: React.FunctionComponent<any> = () => {
     if (error) {
       Alert.error(`ERROR: Unable to add device\n Error Code: ${error}`);
     } else {
-      Alert.success(`SUCCESS: Device added successfully!`);
+      Alert.success(`SUCCESS: Device added successfully`);
       setFormValue({ deviceName: '' });
     }
   };

@@ -6,6 +6,7 @@ import DashboardContainer from '../DashboardContainer';
 import ROUTES from '../../constant/Routes';
 import DeviceAddContainer from '../DeviceAddContainer';
 import './AuthenticatedContainer.css';
+import DeviceListContainer from '../DeviceListConatiner';
 
 const AuthenticatedContainer = () => {
   return (
@@ -21,6 +22,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.DEVICE_NEW}>
               <DeviceAddContainer />
+            </Route>
+            <Route path={ROUTES.DEVICE_ALL}>
+              <DeviceListContainer />
             </Route>
             <Route path={ROUTES.ROOT}>
               <DashboardContainer />
