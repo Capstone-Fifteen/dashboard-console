@@ -12,7 +12,7 @@ const UnauthenticatedContainer: React.FunctionComponent<any> = () => {
   const handleSubmission = () => dispatch(setAuthenticated());
 
   return (
-    <Container classPrefix="mainContainer">
+    <Container className="mainContainer">
       <Panel header={<h3>Admin Secret</h3>} bordered className="loginContainer">
         <Form
           model={authenticationModel}
@@ -27,7 +27,7 @@ const UnauthenticatedContainer: React.FunctionComponent<any> = () => {
           <FormGroup>
             <ButtonToolbar>
               <Button appearance="primary" type="submit">
-                Submit
+                Enter
               </Button>
             </ButtonToolbar>
           </FormGroup>

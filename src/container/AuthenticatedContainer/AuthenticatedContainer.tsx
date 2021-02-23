@@ -1,6 +1,6 @@
 import React from 'react';
 import SideNavContainer from '../SideNavContainer';
-import { Affix, Container, Content } from 'rsuite';
+import { Container, Content } from 'rsuite';
 import { Switch, Route } from 'react-router-dom';
 import DashboardContainer from '../DashboardContainer';
 import ROUTES from '../../constant/Routes';
@@ -11,11 +11,9 @@ import DeviceListContainer from '../DeviceListConatiner';
 const AuthenticatedContainer = () => {
   return (
     <Container>
-      <Affix>
-        <SideNavContainer />
-      </Affix>
+      <SideNavContainer />
       <Container>
-        <Content classPrefix="contentContainer">
+        <Content className="contentContainer">
           <Switch>
             <Route path={ROUTES.DASHBOARD}>
               <DashboardContainer />

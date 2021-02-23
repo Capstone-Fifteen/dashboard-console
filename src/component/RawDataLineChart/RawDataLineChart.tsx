@@ -1,5 +1,5 @@
 import React from 'react';
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import moment from 'moment';
 import { takeRight } from 'lodash';
 import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
@@ -29,24 +29,24 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   };
 
   return (
-    <LineChart
-      data={takeRight(graphData, 5)}
-      width={500}
-      height={300}
-      margin={{
-        top: 10,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="created_at" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      {extractLineData()}
-    </LineChart>
+    <ResponsiveContainer width={500} height={300}>
+      <LineChart
+        data={takeRight(graphData, 5)}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="created_at" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        {extractLineData()}
+      </LineChart>
+    </ResponsiveContainer>
   );
 };
 

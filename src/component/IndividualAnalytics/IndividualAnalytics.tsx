@@ -2,7 +2,7 @@ import React from 'react';
 import { Divider, Panel } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
-import './AnalyticsCard.css';
+import './IndividualAnalytics.css';
 import AccuracyPieChart from '../AccuracyPieChart';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   predictedData: any[];
 }
 
-const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
+const IndividualAnalytics: React.FunctionComponent<Props> = ({ rawData }) => {
   return (
     <Panel bordered>
       <div className="sectionContainer">
@@ -69,4 +69,4 @@ const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
   );
 };
 
-export default AnalyticsCard;
+export default IndividualAnalytics;
