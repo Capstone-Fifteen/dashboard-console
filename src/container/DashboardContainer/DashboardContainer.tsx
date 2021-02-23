@@ -15,6 +15,10 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
         predictedData={predictedDataSubscription && predictedDataSubscription['predicted_data']}
         rawData={rawDataSubscription && rawDataSubscription['raw_data']}
       />
+      <AnalyticsCard
+        predictedData={predictedDataSubscription && predictedDataSubscription['predicted_data']}
+        rawData={rawDataSubscription && rawDataSubscription['raw_data']}
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Divider, Panel } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
 import './AnalyticsCard.css';
+import AccuracyPieChart from '../AccuracyPieChart';
 
 interface Props {
   rawData: any[];
@@ -21,6 +22,7 @@ const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
           <span className="subTitle">Current Dance Move</span>
           <span className="title">Dab</span>
         </div>
+        <AccuracyPieChart />
       </div>
       <Divider />
       <div className="sectionContainer">
@@ -32,6 +34,7 @@ const AnalyticsCard: React.FunctionComponent<Props> = ({ rawData }) => {
           <span className="subTitle">Expected Position</span>
           <span className="title">2</span>
         </div>
+        <AccuracyPieChart />
       </div>
       <Divider />
       <div className="sectionContainer">
