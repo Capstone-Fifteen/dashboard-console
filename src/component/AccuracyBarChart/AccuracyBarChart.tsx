@@ -36,7 +36,7 @@ const AccuracyBarChart: React.FunctionComponent<any> = () => {
         <Tooltip />
         <Bar dataKey="accuracy">
           {data.map((_, index) => (
-            <Cell fill={LINE_COLOR_PALETTE[index]} />
+            <Cell key={index} fill={LINE_COLOR_PALETTE[index]} />
           ))}
         </Bar>
       </BarChart>

@@ -12,19 +12,31 @@ interface Props {
 const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   const graphData =
     data &&
-    data.map((item) => ({
-      ...item,
-      created_at: moment(item['created_at']).format('LTS'),
+    data.map((value) => ({
+      ...value,
+      created_at: moment(value['created_at']).format('LTS'),
     }));
 
   const extractLineData = () => {
     if (type === 'accelerometer') {
       return ACCELEROMETER_READING.map((reading, index) => (
-        <Line key={reading} type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+        <Line
+          key={reading}
+          type="monotone"
+          isAnimationActive={false}
+          dataKey={reading}
+          stroke={LINE_COLOR_PALETTE[index]}
+        />
       ));
     }
     return GYROSCOPE_READING.map((reading, index) => (
-      <Line key={reading} type="monotone" dataKey={reading} stroke={LINE_COLOR_PALETTE[index]} />
+      <Line
+        key={reading}
+        type="monotone"
+        isAnimationActive={false}
+        dataKey={reading}
+        stroke={LINE_COLOR_PALETTE[index]}
+      />
     ));
   };
 
