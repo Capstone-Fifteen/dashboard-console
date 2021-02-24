@@ -27,6 +27,8 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               predictedData={predictedData.filter((value: any) => value['device_id'] === 1)}
               rawData={rawData.filter((value: any) => value['device_id'] === 1)}
               deviceId={1}
+              expectedDanceData={['Dab', 'Wipetable', 'Sidepunch', 'Gun', 'Listen', 'Finale']}
+              expectedPositionData={[1, 3, 2, 2, 3, 2, 1]}
             />
           </Col>
           <Col md={8} sm={24}>

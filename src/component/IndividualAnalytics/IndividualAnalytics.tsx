@@ -10,9 +10,17 @@ interface Props {
   rawData: any[];
   predictedData: any[];
   deviceId?: number;
+  expectedDanceData?: string[];
+  expectedPositionData?: number[];
 }
 
-const IndividualAnalytics: React.FunctionComponent<Props> = ({ rawData, predictedData, deviceId }) => {
+const IndividualAnalytics: React.FunctionComponent<Props> = ({
+  rawData,
+  predictedData,
+  deviceId,
+  expectedDanceData,
+  expectedPositionData,
+}) => {
   const currentPredictedData = takeRight(predictedData, 1)[0];
 
   const getDelayType = (delay: number) => {
@@ -31,15 +39,19 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({ rawData, predicte
   return (
     <Panel bordered header={`Device ID: ${deviceId || 'None'}`}>
       <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Expected Dance Move</span>
-          <span className="title">Dab</span>
-        </div>
+        {expectedDanceData && (
+          <div className="textContainer">
+            <span className="subTitle">Expected Dance Move</span>
+            <span className="title">{expectedDanceData[predictedData.length - 1]}</span>
+          </div>
+        )}
         <div className="textContainer">
           <span className="subTitle">Current Dance Move</span>
           <span className="title">{(currentPredictedData && currentPredictedData['dance_move']) || 'No data'}</span>
         </div>
-        <AccuracyPieChart />
+        {expectedDanceData && (
+          <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" />
+        )}
       </div>
       <Divider />
       <div className="sectionContainer">
@@ -51,7 +63,9 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({ rawData, predicte
           <span className="subTitle">Expected Position</span>
           <span className="title">{(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}</span>
         </div>
-        <AccuracyPieChart />
+        {expectedPositionData && (
+          <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
+        )}
       </div>
       <Divider />
       <div className="sectionContainer">
@@ -65,7 +79,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({ rawData, predicte
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Moves</span>
-          <ExecutedDanceTable data={predictedData} />
+          <ExecutedDanceTable data={predictedData} expectedDanceData={expectedDanceData} />
         </div>
       </div>
       <Divider />
