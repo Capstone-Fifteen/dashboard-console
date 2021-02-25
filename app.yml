@@ -5,3 +5,14 @@ env_variables:
   REACT_APP_GRAPHQL_HTTP_ENDPOINT: "http://10.148.0.3:8080/v1/graphql"
   REACT_APP_GRAPHQL_WS_ENDPOINT: "ws://10.148.0.3:8080/v1/graphql"
   REACT_APP_GRAPHQL_SECRET: "Xjb84POExBxidM5gB3tdVrWHK1nqbx9o"
+handlers:
+  - url: /static
+    static_dir: build/static
+
+  - url: /(.*\.(json|ico|js))$
+    static_files: build/\1
+    upload: build/.*\.(json|ico|js)$
+
+  - url: .*
+    static_files: build/index.html
+    upload: build/index.html
