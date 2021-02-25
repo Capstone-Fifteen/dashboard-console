@@ -17,12 +17,12 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   return (
     <PanelGroup accordion bordered>
-      <Panel header={<h4>Team Analytics</h4>}>
+      <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
         <TeamAnalytics />
       </Panel>
-      <Panel header={<h4>Individual Analytics</h4>}>
+      <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
         <Row>
-          <Col md={8} sm={24}>
+          <Col md={12} sm={24}>
             <IndividualAnalytics
               predictedData={predictedData.filter((value: any) => value['device_id'] === 1)}
               rawData={rawData.filter((value: any) => value['device_id'] === 1)}
@@ -31,18 +31,11 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               expectedPositionData={[1, 3, 2, 2, 3, 2, 1]}
             />
           </Col>
-          <Col md={8} sm={24}>
+          <Col md={12} sm={24}>
             <IndividualAnalytics
               predictedData={predictedData.filter((value: any) => value['device_id'] === 2)}
               rawData={rawData.filter((value: any) => value['device_id'] === 2)}
               deviceId={2}
-            />
-          </Col>
-          <Col md={8} sm={24}>
-            <IndividualAnalytics
-              predictedData={predictedData.filter((value: any) => value['device_id'] === 3)}
-              rawData={rawData.filter((value: any) => value['device_id'] === 3)}
-              deviceId={3}
             />
           </Col>
         </Row>

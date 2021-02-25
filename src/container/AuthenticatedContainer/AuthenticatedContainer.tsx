@@ -5,10 +5,12 @@ import { Switch, Route } from 'react-router-dom';
 import DashboardContainer from '../DashboardContainer';
 import ROUTES from '../../constant/Routes';
 import DeviceAddContainer from '../DeviceAddContainer';
-import './AuthenticatedContainer.css';
 import DeviceListContainer from '../DeviceListConatiner';
 import DancerAddContainer from '../DancerAddContainer';
 import DancerListContainer from '../DancerListContainer';
+import SessionNewContainer from '../SessionNewContainer';
+
+import './AuthenticatedContainer.css';
 
 const AuthenticatedContainer = () => {
   return (
@@ -31,6 +33,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.DEVICE_ALL}>
               <DeviceListContainer />
+            </Route>
+            <Route path={ROUTES.SESSION_NEW}>
+              <SessionNewContainer />
             </Route>
             <Route path={ROUTES.ROOT}>
               <DashboardContainer />

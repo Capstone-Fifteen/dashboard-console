@@ -56,13 +56,17 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
       </div>
       <Divider />
       <div className="sectionContainer">
+        {expectedPositionData && (
+          <div className="textContainer">
+            <span className="subTitle">Expected Position</span>
+            <span className="title">
+              {(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}
+            </span>
+          </div>
+        )}
         <div className="textContainer">
           <span className="subTitle">Current Position</span>
           <span className="title">2</span>
-        </div>
-        <div className="textContainer">
-          <span className="subTitle">Expected Position</span>
-          <span className="title">{(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}</span>
         </div>
         {expectedPositionData && (
           <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
