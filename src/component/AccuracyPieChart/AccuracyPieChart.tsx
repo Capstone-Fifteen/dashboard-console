@@ -28,7 +28,7 @@ const AccuracyPieChart: React.FunctionComponent<Props> = ({ actualData, expected
             .map((value, index) => (value['dance_position'] === expectedData[actualData.length - index - 1] ? 1 : 0))
             .reduce((a: number, b: number) => a + b, 0);
     const incorrectDataCount = actualData.length - correctDataCount;
-    
+
     return [
       { name: 'Correct', value: correctDataCount, fill: '#58b158' },
       { name: 'Incorrect', value: incorrectDataCount, fill: '#f04f43' },

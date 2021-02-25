@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Grid, Panel, Row } from 'rsuite';
 import AccuracyBarChart from '../AccuracyBarChart';
 import RhythmicLineChart from '../RhythmicLineChart';
+import FatigueLineChart from '../FatigueLineChart';
+
 import './TeamAnalytics.css';
 
 const TeamAnalytics: React.FunctionComponent = () => {
@@ -44,6 +46,13 @@ const TeamAnalytics: React.FunctionComponent = () => {
           <Panel header="Rhythmic Performance Over Time" bordered>
             <div className="cardContainer">
               <RhythmicLineChart />
+            </div>
+          </Panel>
+        </Col>
+        <Col md={12} sm={24}>
+          <Panel header="Fatigue Level Over Time" bordered>
+            <div className="cardContainer">
+              <FatigueLineChart />
             </div>
           </Panel>
         </Col>

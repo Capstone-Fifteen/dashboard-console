@@ -2,9 +2,10 @@ import React from 'react';
 import { Divider, Panel } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
-import './IndividualAnalytics.css';
 import AccuracyPieChart from '../AccuracyPieChart';
 import { takeRight, get } from 'lodash';
+
+import './IndividualAnalytics.css';
 
 interface Props {
   rawData: any[];
