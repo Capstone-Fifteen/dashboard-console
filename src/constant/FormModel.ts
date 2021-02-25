@@ -9,5 +9,10 @@ export const authenticationModel = Schema.Model({
 });
 
 export const deviceAddModel = Schema.Model({
-  deviceName: StringType().isRequired(),
+  deviceName: StringType().isRequired('Required field.'),
+});
+
+export const dancerAddModel = Schema.Model({
+  name: StringType().isRequired('Required field.'),
+  gender: StringType().isRequired('Required field.'),
 });

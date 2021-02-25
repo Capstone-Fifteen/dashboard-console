@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import ADD_DEVICE_MUTATION from '../../graphql/mutation/AddDeviceMutation';
 
 const DeviceAddContainer: React.FunctionComponent<any> = () => {
-  const [formValue, setFormValue] = useState({ deviceName: '' });
+  const [formValue, setFormValue] = useState<any>({ deviceName: '' });
   const [addDevice, { error }] = useMutation(ADD_DEVICE_MUTATION, {
     variables: {
       wearable: { name: formValue.deviceName },
@@ -28,7 +28,7 @@ const DeviceAddContainer: React.FunctionComponent<any> = () => {
         fluid
         model={deviceAddModel}
         formValue={formValue}
-        onChange={(value: any) => setFormValue(value)}
+        onChange={(value) => setFormValue(value)}
         onSubmit={(checkStatus) => checkStatus && handleSubmission()}
       >
         <FormGroup>

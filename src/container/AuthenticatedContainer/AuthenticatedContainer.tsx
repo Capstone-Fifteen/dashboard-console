@@ -7,6 +7,8 @@ import ROUTES from '../../constant/Routes';
 import DeviceAddContainer from '../DeviceAddContainer';
 import './AuthenticatedContainer.css';
 import DeviceListContainer from '../DeviceListConatiner';
+import DancerAddContainer from '../DancerAddContainer';
+import DancerListContainer from '../DancerListContainer';
 
 const AuthenticatedContainer = () => {
   return (
@@ -17,6 +19,12 @@ const AuthenticatedContainer = () => {
           <Switch>
             <Route path={ROUTES.DASHBOARD}>
               <DashboardContainer />
+            </Route>
+            <Route path={ROUTES.DANCER_NEW}>
+              <DancerAddContainer />
+            </Route>
+            <Route path={ROUTES.DANCER_ALL}>
+              <DancerListContainer />
             </Route>
             <Route path={ROUTES.DEVICE_NEW}>
               <DeviceAddContainer />

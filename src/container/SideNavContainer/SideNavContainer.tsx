@@ -98,7 +98,7 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                   eventKey={ALL_DANCER_EVENT_KEY}
                   active={checkActive(ALL_DANCER_EVENT_KEY)}
                   componentClass={Link}
-                  to={ROUTES.DANCER_NEW}
+                  to={ROUTES.DANCER_ALL}
                 >
                   All Dancers
                 </Dropdown.Item>
