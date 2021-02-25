@@ -1,60 +1,49 @@
 import React from 'react';
-import { Col, Grid, Panel, Row } from 'rsuite';
+import { Col, Grid, Row } from 'rsuite';
 import AccuracyBarChart from '../AccuracyBarChart';
 import RhythmicLineChart from '../RhythmicLineChart';
 import FatigueLineChart from '../FatigueLineChart';
 
 import './TeamAnalytics.css';
+import Card from '../Card';
 
 const TeamAnalytics: React.FunctionComponent = () => {
   return (
     <Grid fluid>
       <Row className="rowContainer">
         <Col md={12} sm={24}>
-          <Panel header="Dance Accuracy" bordered>
-            <div className="cardContainer">
-              <AccuracyBarChart />
-            </div>
-          </Panel>
+          <Card header="Average Dance Accuracy">
+            <AccuracyBarChart />
+          </Card>
         </Col>
         <Col md={12} sm={24}>
-          <Panel header="Dance Accuracy Over Time" bordered>
-            <div className="cardContainer">
-              <RhythmicLineChart />
-            </div>
-          </Panel>
+          <Card header="Dance Accuracy Over Time">
+            <RhythmicLineChart />
+          </Card>
         </Col>
       </Row>
       <Row className="rowContainer">
         <Col md={12} sm={24}>
-          <Panel header="Position Accuracy" bordered>
-            <div className="cardContainer">
-              <AccuracyBarChart />
-            </div>
-          </Panel>
+          <Card header="Average Position Accuracy">
+            <AccuracyBarChart />
+          </Card>
         </Col>
         <Col md={12} sm={24}>
-          <Panel header="Position Accuracy Over Time" bordered>
-            <div className="cardContainer">
-              <RhythmicLineChart />
-            </div>
-          </Panel>
+          <Card header="Position Accuracy Over Time">
+            <RhythmicLineChart />
+          </Card>
         </Col>
       </Row>
       <Row className="rowContainer">
         <Col md={12} sm={24}>
-          <Panel header="Rhythmic Performance Over Time" bordered>
-            <div className="cardContainer">
-              <RhythmicLineChart />
-            </div>
-          </Panel>
+          <Card header="Rhythmic Performance Over Time">
+            <RhythmicLineChart />
+          </Card>
         </Col>
         <Col md={12} sm={24}>
-          <Panel header="Fatigue Level Over Time" bordered>
-            <div className="cardContainer">
-              <FatigueLineChart />
-            </div>
-          </Panel>
+          <Card header="Fatigue Level Over Time">
+            <FatigueLineChart />
+          </Card>
         </Col>
       </Row>
     </Grid>

@@ -9,6 +9,7 @@ import DeviceListContainer from '../DeviceListConatiner';
 import DancerAddContainer from '../DancerAddContainer';
 import DancerListContainer from '../DancerListContainer';
 import SessionNewContainer from '../SessionNewContainer';
+import DancerProfileContainer from '../DancerProfileContainer';
 
 import './AuthenticatedContainer.css';
 
@@ -24,6 +25,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.DANCER_NEW}>
               <DancerAddContainer />
+            </Route>
+            <Route path={ROUTES.DANCER_INFO}>
+              <DancerProfileContainer />
             </Route>
             <Route path={ROUTES.DANCER_ALL}>
               <DancerListContainer />

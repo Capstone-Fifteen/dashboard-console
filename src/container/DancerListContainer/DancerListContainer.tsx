@@ -4,6 +4,8 @@ import ALL_DANCER_QUERY from '../../graphql/query/AllDancerQuery';
 import { Alert, Panel, Table } from 'rsuite';
 import { get } from 'lodash';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import ROUTES from '../../constant/Routes';
 
 const DancerListContainer: React.FunctionComponent<any> = () => {
   const { loading, error, data } = useQuery(ALL_DANCER_QUERY);
@@ -31,6 +33,10 @@ const DancerListContainer: React.FunctionComponent<any> = () => {
         <Column flexGrow={1}>
           <HeaderCell>Last Updated</HeaderCell>
           <Cell dataKey="last_updated">{(rowData: any) => moment(rowData['last_updated']).format('llll')}</Cell>
+        </Column>
+        <Column width={100}>
+          <HeaderCell>Actions</HeaderCell>
+          <Cell>{() => <Link to={ROUTES.DANCER_INFO}>View</Link>}</Cell>
         </Column>
       </Table>
     </Panel>
