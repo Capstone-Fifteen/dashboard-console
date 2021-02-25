@@ -1,10 +1,6 @@
 runtime: nodejs12
 vpc_access_connector:
   name: projects/capstone-fifteen-staging/locations/asia-southeast2/connectors/app-engine-access
-env_variables:
-  REACT_APP_GRAPHQL_HTTP_ENDPOINT: "http://10.148.0.3:8080/v1/graphql"
-  REACT_APP_GRAPHQL_WS_ENDPOINT: "ws://10.148.0.3:8080/v1/graphql"
-  REACT_APP_GRAPHQL_SECRET: "Xjb84POExBxidM5gB3tdVrWHK1nqbx9o"
 handlers:
   - url: /static
     static_dir: build/static
