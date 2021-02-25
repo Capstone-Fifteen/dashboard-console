@@ -3,7 +3,7 @@ import { Divider, Panel } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
-import { takeRight, get } from 'lodash';
+import { get } from 'lodash';
 
 import './IndividualAnalytics.css';
 
@@ -13,6 +13,7 @@ interface Props {
   deviceId?: number;
   expectedDanceData?: string[];
   expectedPositionData?: number[];
+  donut?: boolean;
 }
 
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
@@ -21,8 +22,9 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   deviceId,
   expectedDanceData,
   expectedPositionData,
+  donut,
 }) => {
-  const currentPredictedData = takeRight(predictedData, 1)[0];
+  const currentPredictedData = predictedData && predictedData[0];
 
   const getDelayType = (delay: number) => {
     if (!delay) {
@@ -51,7 +53,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <span className="title">{(currentPredictedData && currentPredictedData['dance_move']) || 'No data'}</span>
         </div>
         {expectedDanceData && (
-          <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" />
+          <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" donut={donut} />
         )}
       </div>
       <Divider />
@@ -69,7 +71,12 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <span className="title">2</span>
         </div>
         {expectedPositionData && (
-          <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
+          <AccuracyPieChart
+            actualData={predictedData}
+            expectedData={expectedPositionData}
+            type="position"
+            donut={donut}
+          />
         )}
       </div>
       <Divider />

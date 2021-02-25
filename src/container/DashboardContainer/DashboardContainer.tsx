@@ -29,6 +29,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               deviceId={1}
               expectedDanceData={['Dab', 'Wipetable', 'Sidepunch', 'Gun', 'Listen', 'Finale']}
               expectedPositionData={[1, 3, 2, 2, 3, 2, 1]}
+              donut
             />
           </Col>
           <Col md={12} sm={24}>
@@ -36,6 +37,8 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               predictedData={predictedData.filter((value: any) => value['device_id'] === 2)}
               rawData={rawData.filter((value: any) => value['device_id'] === 2)}
               deviceId={2}
+              expectedDanceData={['Dab', 'Listen', 'Listen']}
+              expectedPositionData={[1, 3, 2, 2, 3, 2, 1]}
             />
           </Col>
         </Row>
