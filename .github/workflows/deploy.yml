@@ -28,7 +28,7 @@ jobs:
           yarn run build --if-present
         env:
           REACT_APP_GRAPHQL_HTTP_ENDPOINT: http://10.148.0.3:8080/v1/graphql
-          REACT_APP_GRAPHQL_WS_ENDPOINT: wss://10.148.0.3:8080/v1/graphql
+          REACT_APP_GRAPHQL_WS_ENDPOINT: ws://10.148.0.3:8080/v1/graphql
           REACT_APP_GRAPHQL_SECRET: Xjb84POExBxidM5gB3tdVrWHK1nqbx9o
 
       - name: Deploy to App Engine
