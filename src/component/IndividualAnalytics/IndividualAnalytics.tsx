@@ -13,7 +13,6 @@ interface Props {
   deviceId?: number;
   expectedDanceData?: string[];
   expectedPositionData?: number[];
-  donut?: boolean;
 }
 
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
@@ -22,7 +21,6 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   deviceId,
   expectedDanceData,
   expectedPositionData,
-  donut,
 }) => {
   const currentPredictedData = predictedData && predictedData[0];
 
@@ -39,13 +37,19 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
     return 'On Time';
   };
 
+  const getCurrentExpectedData = (expectedData: any[]) => {
+    const dataLength = Math.min(predictedData.length, expectedData.length);
+
+    return expectedData[dataLength - 1];
+  };
+
   return (
     <Panel bordered header={`Device ID: ${deviceId || 'None'}`}>
       <div className="sectionContainer">
         {expectedDanceData && (
           <div className="textContainer">
             <span className="subTitle">Expected Dance Move</span>
-            <span className="title">{expectedDanceData[predictedData.length - 1]}</span>
+            <span className="title">{getCurrentExpectedData(expectedDanceData)}</span>
           </div>
         )}
         <div className="textContainer">
@@ -53,7 +57,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <span className="title">{(currentPredictedData && currentPredictedData['dance_move']) || 'No data'}</span>
         </div>
         {expectedDanceData && (
-          <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" donut={donut} />
+          <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" />
         )}
       </div>
       <Divider />
@@ -61,22 +65,15 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
         {expectedPositionData && (
           <div className="textContainer">
             <span className="subTitle">Expected Position</span>
-            <span className="title">
-              {(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}
-            </span>
+            <span className="title">{getCurrentExpectedData(expectedPositionData)}</span>
           </div>
         )}
         <div className="textContainer">
           <span className="subTitle">Current Position</span>
-          <span className="title">2</span>
+          <span className="title">{(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}</span>
         </div>
         {expectedPositionData && (
-          <AccuracyPieChart
-            actualData={predictedData}
-            expectedData={expectedPositionData}
-            type="position"
-            donut={donut}
-          />
+          <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
         )}
       </div>
       <Divider />
