@@ -36,7 +36,7 @@ const DancerListContainer: React.FunctionComponent<any> = () => {
         </Column>
         <Column width={100}>
           <HeaderCell>Actions</HeaderCell>
-          <Cell>{() => <Link to={ROUTES.DANCER_INFO}>View</Link>}</Cell>
+          <Cell>{(rowData: any) => <Link to={`${ROUTES.DANCER_ALL}/${rowData.id}`}>View</Link>}</Cell>
         </Column>
       </Table>
     </Panel>

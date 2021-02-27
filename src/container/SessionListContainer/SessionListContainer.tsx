@@ -42,7 +42,7 @@ const SessionListContainer: React.FunctionComponent<any> = () => {
         </Column>
         <Column width={100}>
           <HeaderCell>Actions</HeaderCell>
-          <Cell>{() => <Link to={ROUTES.DASHBOARD}>View</Link>}</Cell>
+          <Cell>{(rowData: any) => <Link to={`${ROUTES.SESSION_ALL}/${rowData.id}`}>View</Link>}</Cell>
         </Column>
       </Table>
     </Panel>

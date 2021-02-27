@@ -10,9 +10,9 @@ import DancerAddContainer from '../DancerAddContainer';
 import DancerListContainer from '../DancerListContainer';
 import SessionNewContainer from '../SessionNewContainer';
 import DancerProfileContainer from '../DancerProfileContainer';
-
-import './AuthenticatedContainer.css';
 import SessionListContainer from '../SessionListContainer';
+import SessionViewContainer from '../SessionViewContainer';
+import './AuthenticatedContainer.css';
 
 const AuthenticatedContainer = () => {
   return (
@@ -41,6 +41,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.SESSION_NEW}>
               <SessionNewContainer />
+            </Route>
+            <Route path={ROUTES.SESSION_INFO}>
+              <SessionViewContainer />
             </Route>
             <Route path={ROUTES.SESSION_ALL}>
               <SessionListContainer />
