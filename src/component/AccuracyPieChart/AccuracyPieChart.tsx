@@ -24,7 +24,7 @@ const AccuracyPieChart: React.FunctionComponent<Props> = ({ actualData, expected
     let correctDataCount = 0;
     let incorrectDataCount = 0;
     for (let i = 0; i < dataLength; i++) {
-      if (expectedData[dataLength - i - 1] === actualData[i][dataKey]) {
+      if (actualData[actualData.length - i - 1][dataKey] === expectedData[i]) {
         correctDataCount++;
       } else {
         incorrectDataCount++;

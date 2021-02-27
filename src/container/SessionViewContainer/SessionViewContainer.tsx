@@ -2,8 +2,8 @@ import React from 'react';
 import { Alert, Loader, PanelGroup } from 'rsuite';
 import { useQuery, useSubscription } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import SESSION_BY_PK_QUERY from '../../graphql/query/SessionByPkQuery';
 import { get } from 'lodash';
+import SESSION_BY_PK_QUERY from '../../graphql/query/SessionByPkQuery';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 

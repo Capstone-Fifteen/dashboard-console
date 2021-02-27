@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Panel } from 'rsuite';
+import { Divider } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import ExecutedDanceTable from '../ExecutedDanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
@@ -10,7 +10,6 @@ import './IndividualAnalytics.css';
 interface Props {
   rawData: any[];
   predictedData: any[];
-  deviceId?: number;
   expectedDanceData?: string[];
   expectedPositionData?: number[];
 }
@@ -18,7 +17,6 @@ interface Props {
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
   rawData,
   predictedData,
-  deviceId,
   expectedDanceData,
   expectedPositionData,
 }) => {
@@ -44,7 +42,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <Panel bordered header={`Device ID: ${deviceId || 'None'}`}>
+    <>
       <div className="sectionContainer">
         {expectedDanceData && (
           <div className="textContainer">
@@ -105,7 +103,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <RawDataLineChart data={rawData} type="gyroscope" />
         </div>
       </div>
-    </Panel>
+    </>
   );
 };
 
