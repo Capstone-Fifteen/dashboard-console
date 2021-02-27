@@ -14,7 +14,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
     data &&
     data.map((value) => ({
       ...value,
-      created_at: moment(value['created_at']).format('LTS'),
+      timestamp: new Date(value['created_at']).getTime(),
     }));
 
   const extractLineData = () => {
@@ -26,6 +26,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
           isAnimationActive={false}
           dataKey={reading}
           stroke={LINE_COLOR_PALETTE[index]}
+          dot={false}
         />
       ));
     }
@@ -36,6 +37,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
         isAnimationActive={false}
         dataKey={reading}
         stroke={LINE_COLOR_PALETTE[index]}
+        dot={false}
       />
     ));
   };
@@ -52,9 +54,15 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="created_at" />
+        <XAxis
+          type="number"
+          dataKey="timestamp"
+          tickFormatter={(time) => moment(time).format('LTS')}
+          domain={['auto', 'auto']}
+          name="Time"
+        />
         <YAxis />
-        <Tooltip />
+        <Tooltip labelFormatter={(label: number) => moment(label).format('LTS')} labelStyle={{ color: 'black' }} />
         <Legend />
         {extractLineData()}
       </LineChart>

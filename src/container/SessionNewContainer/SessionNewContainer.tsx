@@ -29,7 +29,9 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
 
   const handleCheck = (value: any, checked: any) => {
     if (!checked) {
-      setFormObject(delete formObject[value]);
+      const tempFormObject = formObject;
+      delete tempFormObject[value];
+      setFormObject({ ...tempFormObject });
     } else {
       setFormObject({ ...formObject, [value]: { device_id: null, expected_moves: '', expected_position: '' } });
     }

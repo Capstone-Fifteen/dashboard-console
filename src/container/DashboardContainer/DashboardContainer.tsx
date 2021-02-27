@@ -9,15 +9,26 @@ import { get } from 'lodash';
 import './DashboardContainer.css';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
-  const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION);
-  const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION);
-
-  const rawData = get(rawDataSubscription, 'raw_data', []);
-  const predictedData = get(predictedDataSubscription, 'predicted_data', []);
-
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
   const [dancerData, setDancerData] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>(initialFormState);
+
+  const variables = {
+    deviceId: dancerData.map((data: any) => data['device_id']),
+    startTime: '2021-02-24T02:44:41.225+00:00',
+  };
+
+  const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
+    variables,
+    skip: !dancerData.length,
+  });
+  const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
+    variables,
+    skip: !dancerData.length,
+  });
+
+  const rawData = get(rawDataSubscription, 'raw_data', []);
+  const predictedData = get(predictedDataSubscription, 'predicted_data', []);
 
   const handleFormChange = (value: string, dataKey: string) => {
     setAddFormData((prevState: any) => ({
@@ -96,12 +107,12 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   return (
     <PanelGroup accordion bordered>
-      <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
-        <TeamAnalytics />
-      </Panel>
       <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
         {renderAddForm()}
         <Row>{renderIndividualAnalytics()}</Row>
+      </Panel>
+      <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
+        <TeamAnalytics rawData={rawData} predictedData={predictedData} expectedData={dancerData} />
       </Panel>
     </PanelGroup>
   );
