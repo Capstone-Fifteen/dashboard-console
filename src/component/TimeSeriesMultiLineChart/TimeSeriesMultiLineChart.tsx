@@ -17,9 +17,10 @@ import moment from 'moment';
 
 interface Props {
   data: any[];
+  reference?: number;
 }
 
-const FatigueLineChart: React.FunctionComponent<Props> = ({ data }) => {
+const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, reference }) => {
   const renderLine = () =>
     data.map((item: any, index: number) => (
       <Line
@@ -47,13 +48,15 @@ const FatigueLineChart: React.FunctionComponent<Props> = ({ data }) => {
         <YAxis />
         <Tooltip labelFormatter={(label: number) => moment(label).format('LTS')} labelStyle={{ color: 'black' }} />
         <Legend />
-        <ReferenceLine y={70} stroke="red">
-          <Label value="Threshold" fill="white" />
-        </ReferenceLine>
+        {reference && (
+          <ReferenceLine y={reference} stroke="red">
+            <Label value="Threshold" fill="white" />
+          </ReferenceLine>
+        )}
         {renderLine()}
       </LineChart>
     </ResponsiveContainer>
   );
 };
 
-export default FatigueLineChart;
+export default TimeSeriesMultiLineChart;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Grid, Row } from 'rsuite';
 import AccuracyBarChart from '../AccuracyBarChart';
 import RhythmicLineChart from '../RhythmicLineChart';
-import FatigueLineChart from '../FatigueLineChart';
+import TimeSeriesMultiLineChart from '../TimeSeriesMultiLineChart';
 import Card from '../Card';
 
 import './TeamAnalytics.css';
@@ -69,12 +69,12 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData,
       <Row className="rowContainer">
         <Col md={12} sm={24}>
           <Card header="Rhythmic Performance Over Time">
-            <FatigueLineChart data={delayData} />
+            <TimeSeriesMultiLineChart data={delayData} />
           </Card>
         </Col>
         <Col md={12} sm={24}>
           <Card header="Fatigue Level Over Time">
-            <FatigueLineChart data={emgData} />
+            <TimeSeriesMultiLineChart data={emgData} reference={70} />
           </Card>
         </Col>
       </Row>
