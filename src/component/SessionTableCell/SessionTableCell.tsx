@@ -3,14 +3,14 @@ import { Table, Checkbox, SelectPicker, Input, Icon } from 'rsuite';
 
 const { Cell } = Table;
 
-export const CheckCell: React.FunctionComponent<any> = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
+export const CheckCell: React.FunctionComponent<any> = ({ rowData, onChange, formObject, dataKey, ...props }) => (
   <Cell {...props} style={{ padding: 0 }}>
     <div style={{ lineHeight: '46px' }}>
       <Checkbox
         value={rowData[dataKey]}
         inline
         onChange={onChange}
-        checked={checkedKeys.some((item: any) => item === rowData[dataKey])}
+        checked={formObject.hasOwnProperty(rowData[dataKey])}
       />
     </div>
   </Cell>
@@ -40,23 +40,42 @@ export const ImageCell: React.FunctionComponent<any> = ({ rowData, dataKey, ...p
 
 export const SelectPickerCell: React.FunctionComponent<any> = ({
   rowData,
+  idKey,
   onChange,
-  value,
+  formObject,
   dataKey,
   data,
   ...props
 }) => (
   <Cell {...props} style={{ padding: 0 }}>
     <div style={{ height: 40, padding: '5px 10px' }}>
-      <SelectPicker data={data} value={value} onChange={onChange} />
+      <SelectPicker
+        data={data}
+        value={formObject[rowData[idKey]] ? formObject[rowData[idKey]][dataKey] : null}
+        onChange={(value) => onChange(value, rowData[idKey], dataKey)}
+        disabled={!formObject.hasOwnProperty(rowData[idKey])}
+      />
     </div>
   </Cell>
 );
 
-export const InputCell: React.FunctionComponent<any> = ({ rowData, onChange, value, dataKey, data, ...props }) => (
+export const InputCell: React.FunctionComponent<any> = ({
+  rowData,
+  idKey,
+  onChange,
+  formObject,
+  dataKey,
+  data,
+  ...props
+}) => (
   <Cell {...props} style={{ padding: 0 }}>
     <div style={{ height: 40, padding: '5px 10px' }}>
-      <Input placeholder="Comma-Separated Value (Optional)" value={value} onChange={onChange} />
+      <Input
+        placeholder="Comma-Separated Value (Optional)"
+        value={formObject[rowData[idKey]] ? formObject[rowData[idKey]][dataKey] : ''}
+        onChange={(value) => onChange(value, rowData[idKey], dataKey)}
+        disabled={!formObject.hasOwnProperty(rowData[idKey])}
+      />
     </div>
   </Cell>
 );

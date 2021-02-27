@@ -12,6 +12,7 @@ import SessionNewContainer from '../SessionNewContainer';
 import DancerProfileContainer from '../DancerProfileContainer';
 
 import './AuthenticatedContainer.css';
+import SessionListContainer from '../SessionListContainer';
 
 const AuthenticatedContainer = () => {
   return (
@@ -40,6 +41,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.SESSION_NEW}>
               <SessionNewContainer />
+            </Route>
+            <Route path={ROUTES.SESSION_ALL}>
+              <SessionListContainer />
             </Route>
             <Route path={ROUTES.ROOT}>
               <DashboardContainer />

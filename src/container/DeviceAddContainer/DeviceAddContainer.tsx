@@ -3,6 +3,7 @@ import { Alert, Button, ButtonToolbar, ControlLabel, Form, FormControl, FormGrou
 import { deviceAddModel } from '../../constant/FormModel';
 import { useMutation } from '@apollo/client';
 import ADD_DEVICE_MUTATION from '../../graphql/mutation/AddDeviceMutation';
+import ALL_DEVICE_QUERY from '../../graphql/query/AllDeviceQuery';
 
 const DeviceAddContainer: React.FunctionComponent<any> = () => {
   const [formValue, setFormValue] = useState<any>({ deviceName: '' });
@@ -10,16 +11,19 @@ const DeviceAddContainer: React.FunctionComponent<any> = () => {
     variables: {
       wearable: { name: formValue.deviceName },
     },
+    onCompleted: () => {
+      if (error) {
+        Alert.error(`ERROR: Unable to add device\n Error Code: ${error}`);
+      } else {
+        Alert.success(`SUCCESS: Device added successfully`);
+        setFormValue({ deviceName: '' });
+      }
+    },
+    refetchQueries: [{ query: ALL_DEVICE_QUERY }],
   });
 
   const handleSubmission = async () => {
     await addDevice();
-    if (error) {
-      Alert.error(`ERROR: Unable to add device\n Error Code: ${error}`);
-    } else {
-      Alert.success(`SUCCESS: Device added successfully`);
-      setFormValue({ deviceName: '' });
-    }
   };
 
   return (

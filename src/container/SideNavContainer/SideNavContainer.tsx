@@ -11,7 +11,7 @@ import {
   NEW_DEVICE_EVENT_KEY,
   NEW_SESSION_EVENT_KEY,
   OVERVIEW_EVENT_KEY,
-  PAST_SESSION_EVENT_KEY,
+  ALL_SESSION_EVENT_KEY,
   SESSION_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
 import ROUTES from '../../constant/Routes';
@@ -119,12 +119,12 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                   New Session
                 </Dropdown.Item>
                 <Dropdown.Item
-                  eventKey={PAST_SESSION_EVENT_KEY}
-                  active={checkActive(PAST_SESSION_EVENT_KEY)}
+                  eventKey={ALL_SESSION_EVENT_KEY}
+                  active={checkActive(ALL_SESSION_EVENT_KEY)}
                   componentClass={Link}
                   to={ROUTES.SESSION_ALL}
                 >
-                  Past Sessions
+                  All Sessions
                 </Dropdown.Item>
               </Dropdown>
             </Nav>

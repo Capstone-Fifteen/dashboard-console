@@ -32,7 +32,7 @@ const DancerListContainer: React.FunctionComponent<any> = () => {
         </Column>
         <Column flexGrow={1}>
           <HeaderCell>Last Updated</HeaderCell>
-          <Cell dataKey="last_updated">{(rowData: any) => moment(rowData['last_updated']).format('llll')}</Cell>
+          <Cell>{(rowData: any) => moment(rowData['last_updated']).format('llll')}</Cell>
         </Column>
         <Column width={100}>
           <HeaderCell>Actions</HeaderCell>

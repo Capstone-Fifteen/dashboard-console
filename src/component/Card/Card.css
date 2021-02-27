@@ -1,3 +1,7 @@
+.panelContainer {
+  height: 100%;
+}
+
 .cardContent {
   display: flex;
   flex-direction: column;
