@@ -1,8 +1,8 @@
 import React from 'react';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import moment from 'moment';
 import { takeRight } from 'lodash';
 import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
+import { epochTimeFormatter } from '../../utils/numeric';
 
 interface Props {
   data: any[];
@@ -57,12 +57,12 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
         <XAxis
           type="number"
           dataKey="timestamp"
-          tickFormatter={(time) => moment(time).format('LTS')}
+          tickFormatter={epochTimeFormatter}
           domain={['auto', 'auto']}
           name="Time"
         />
         <YAxis />
-        <Tooltip labelFormatter={(label: number) => moment(label).format('LTS')} labelStyle={{ color: 'black' }} />
+        <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
         {extractLineData()}
       </LineChart>

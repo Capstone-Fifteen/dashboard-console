@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Grid, Row } from 'rsuite';
 import AccuracyBarChart from '../AccuracyBarChart';
-import RhythmicLineChart from '../RhythmicLineChart';
 import TimeSeriesMultiLineChart from '../TimeSeriesMultiLineChart';
 import Card from '../Card';
 import { mean } from 'lodash';
@@ -40,66 +39,94 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData,
     };
   });
 
-  const moveAccuracyData = expectedDeviceData.map(({ device_id, expected_moves }) => {
+  const accuracyData = expectedDeviceData.map(({ device_id, expected_moves, expected_positions }) => {
     // get predicted data for the specific device ID
     const filteredData = predictedData.filter((data) => data['device_id'] === device_id);
 
     // get expected dance moves
     const expectedDanceMoves = expected_moves.split(',').map((move: string) => move.trim());
+
+    // get expected dance positions
+    const expectedDancePositions = expected_positions.split(',').map((position: string) => parseInt(position.trim()));
     const dataLength = Math.min(filteredData.length, expectedDanceMoves.length);
-    let accuracyRate: number[] = [];
+
+    // accuracy of dance moves so far
+    let moveAccuracyRate: number[] = [];
+
+    // accuracy of dance positions so far
+    let positionAccuracyRate: number[] = [];
     let timestamp: number[] = [];
 
+    let currentMoveAccuracy = 0;
+    let currentPositionAccuracy = 0;
     for (let i = 0; i < dataLength; i++) {
-      let currentAccuracy = 0;
-
       // get current predicted data (indexed from the back)
       const currentPredictedData = filteredData[filteredData.length - i - 1];
 
-      // set accuracy to 1 if predicted = expected
+      // set accuracy += 1 if predicted = expected
       if (currentPredictedData['dance_move'] === expectedDanceMoves[i]) {
-        currentAccuracy = 1;
+        currentMoveAccuracy++;
+      }
+      if (currentPredictedData['dance_position'] === expectedDancePositions[i]) {
+        currentPositionAccuracy++;
       }
 
       // calculate the running average
-      const averageAccuracy = mean([...accuracyRate, currentAccuracy]);
-      accuracyRate.push(averageAccuracy);
+      const averageMoveAccuracy = currentMoveAccuracy / (i + 1);
+      const averagePositionAccuracy = currentPositionAccuracy / (i + 1);
+
+      // push current accuracy into respective accuracy array
+      moveAccuracyRate.push(averageMoveAccuracy);
+      positionAccuracyRate.push(averagePositionAccuracy);
       timestamp.push(new Date(currentPredictedData['created_at']).getTime());
     }
 
     return {
-      deviceId: device_id,
-      data: accuracyRate.map((value, index) => ({
-        timestamp: timestamp[index],
-        value,
-      })),
-      average: mean(accuracyRate),
+      moveAccuracy: {
+        deviceId: device_id,
+        data: moveAccuracyRate.map((value, index) => ({
+          timestamp: timestamp[index],
+          value,
+        })),
+        average: mean(moveAccuracyRate),
+      },
+      positionAccuracy: {
+        deviceId: device_id,
+        data: positionAccuracyRate.map((value, index) => ({
+          timestamp: timestamp[index],
+          value,
+        })),
+        average: mean(positionAccuracyRate),
+      },
     };
   });
+
+  const moveAccuracy = accuracyData.map((data) => data.moveAccuracy);
+  const positionAccuracy = accuracyData.map((data) => data.positionAccuracy);
 
   return (
     <Grid fluid>
       <Row className="rowContainer">
         <Col md={12} sm={24}>
           <Card header="Average Dance Accuracy">
-            <AccuracyBarChart data={moveAccuracyData} />
+            <AccuracyBarChart percentage data={moveAccuracy} />
           </Card>
         </Col>
         <Col md={12} sm={24}>
           <Card header="Dance Accuracy Over Time">
-            <TimeSeriesMultiLineChart data={moveAccuracyData} />
+            <TimeSeriesMultiLineChart percentage data={moveAccuracy} />
           </Card>
         </Col>
       </Row>
       <Row className="rowContainer">
         <Col md={12} sm={24}>
           <Card header="Average Position Accuracy">
-            <AccuracyBarChart data={moveAccuracyData} />
+            <AccuracyBarChart percentage data={positionAccuracy} />
           </Card>
         </Col>
         <Col md={12} sm={24}>
           <Card header="Position Accuracy Over Time">
-            <RhythmicLineChart />
+            <TimeSeriesMultiLineChart percentage data={positionAccuracy} />
           </Card>
         </Col>
       </Row>

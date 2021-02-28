@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'rsuite';
-import moment from 'moment';
+import { epochTimeFormatter } from '../../utils/numeric';
 
 interface Props {
   data: any[];
@@ -11,7 +11,7 @@ const ExecutedDanceTable: React.FunctionComponent<Props> = ({ data, expectedDanc
   const tableData = data.map((value, index) => ({
     ...value,
     expected: expectedDanceData && expectedDanceData[data.length - index - 1],
-    created_at: moment(value['created_at']).format('LTS'),
+    created_at: epochTimeFormatter(value['created_at']),
   }));
 
   const { Column, HeaderCell, Cell } = Table;

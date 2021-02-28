@@ -13,14 +13,15 @@ import {
 } from 'recharts';
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 import { takeRight } from 'lodash';
-import moment from 'moment';
+import { epochTimeFormatter, percentageFormatter } from '../../utils/numeric';
 
 interface Props {
   data: any[];
   reference?: number;
+  percentage?: boolean;
 }
 
-const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, reference }) => {
+const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, reference, percentage }) => {
   const renderLine = () =>
     data.map((item: any, index: number) => (
       <Line
@@ -41,12 +42,16 @@ const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, refere
         <XAxis
           type="number"
           dataKey="timestamp"
-          tickFormatter={(time) => moment(time).format('LTS')}
+          tickFormatter={epochTimeFormatter}
           domain={['auto', 'auto']}
           name="Time"
         />
-        <YAxis />
-        <Tooltip labelFormatter={(label: number) => moment(label).format('LTS')} labelStyle={{ color: 'black' }} />
+        <YAxis tickFormatter={(value) => (percentage ? percentageFormatter(value) : value)} />
+        <Tooltip
+          labelFormatter={epochTimeFormatter}
+          formatter={(value: any) => (percentage ? percentageFormatter(value) : value)}
+          labelStyle={{ color: 'black' }}
+        />
         <Legend />
         {reference && (
           <ReferenceLine y={reference} stroke="red">

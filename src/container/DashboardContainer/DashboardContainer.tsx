@@ -15,7 +15,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const variables = {
     deviceId: dancerData.map((data: any) => data['device_id']),
-    startTime: '2021-02-28T03:33:55.335+00:00',
+    startTime: '2021-02-28T03:35:58.68+00:00',
   };
 
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
