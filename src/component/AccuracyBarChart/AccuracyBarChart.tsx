@@ -2,22 +2,11 @@ import React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 
-const AccuracyBarChart: React.FunctionComponent<any> = () => {
-  const data = [
-    {
-      name: 'John',
-      accuracy: 0.6,
-    },
-    {
-      name: 'Sally',
-      accuracy: 0.8,
-    },
-    {
-      name: 'Michael',
-      accuracy: 0.8,
-    },
-  ];
+interface Props {
+  data: any[];
+}
 
+const AccuracyBarChart: React.FunctionComponent<Props> = ({ data }) => {
   return (
     <ResponsiveContainer width={500} height={300}>
       <BarChart
@@ -32,9 +21,9 @@ const AccuracyBarChart: React.FunctionComponent<any> = () => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
-        <YAxis type="category" dataKey="name" />
-        <Tooltip />
-        <Bar dataKey="accuracy">
+        <YAxis type="category" dataKey="deviceId" tickFormatter={(value) => `Device ID: ${value}`} />
+        <Tooltip labelFormatter={(label) => `Device ID: ${label}`} labelStyle={{ color: 'black' }} />
+        <Bar dataKey="average">
           {data.map((_, index) => (
             <Cell key={index} fill={LINE_COLOR_PALETTE[index]} />
           ))}
