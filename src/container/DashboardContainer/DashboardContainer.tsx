@@ -3,7 +3,7 @@ import IndividualAnalytics from '../../component/IndividualAnalytics';
 import { useSubscription } from '@apollo/client';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
-import { Button, Col, Icon, IconButton, Input, Panel, PanelGroup, Popover, Row, Whisper } from 'rsuite';
+import { Button, ButtonToolbar, Col, Icon, IconButton, Input, Panel, PanelGroup, Popover, Row, Whisper } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
 import { get } from 'lodash';
 import './DashboardContainer.css';
@@ -12,10 +12,11 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
   const [dancerData, setDancerData] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>(initialFormState);
+  const [startTime, setStartTime] = useState<string>('2021-02-28T03:35:58.68+00:00');
 
   const variables = {
     deviceId: dancerData.map((data: any) => data['device_id']),
-    startTime: '2021-02-28T03:35:58.68+00:00',
+    startTime,
   };
 
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
@@ -39,39 +40,46 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const renderAddForm = () => (
     <div className="addFormContainer">
-      <Whisper
-        trigger="click"
-        placement="left"
-        speaker={
-          <Popover title="Add A Dancer">
-            <Input
-              placeholder="Expected Dance Moves"
-              value={addFormData['expected_moves']}
-              onChange={(value) => handleFormChange(value, 'expected_moves')}
-            />
-            <Input
-              placeholder="Expected Dance Positions"
-              value={addFormData['expected_positions']}
-              onChange={(value) => handleFormChange(value, 'expected_positions')}
-            />
-            <Input
-              placeholder="Wearable ID"
-              value={addFormData['device_id']}
-              onChange={(value) => handleFormChange(value, 'device_id')}
-            />
-            <Button
-              onClick={() => {
-                setDancerData((prevState: any) => [...prevState, addFormData]);
-                setAddFormData(initialFormState);
-              }}
-            >
-              Add
-            </Button>
-          </Popover>
-        }
-      >
-        <IconButton disabled={dancerData.length >= 3} icon={<Icon icon="plus" />} />
-      </Whisper>
+      <ButtonToolbar>
+        <Whisper
+          trigger="click"
+          placement="left"
+          speaker={
+            <Popover title="Add A Dancer">
+              <Input
+                placeholder="Expected Dance Moves"
+                value={addFormData['expected_moves']}
+                onChange={(value) => handleFormChange(value, 'expected_moves')}
+              />
+              <Input
+                placeholder="Expected Dance Positions"
+                value={addFormData['expected_positions']}
+                onChange={(value) => handleFormChange(value, 'expected_positions')}
+              />
+              <Input
+                placeholder="Wearable ID"
+                value={addFormData['device_id']}
+                onChange={(value) => handleFormChange(value, 'device_id')}
+              />
+              <Button
+                onClick={() => {
+                  setDancerData((prevState: any) => [...prevState, addFormData]);
+                  setAddFormData(initialFormState);
+                }}
+              >
+                Add
+              </Button>
+            </Popover>
+          }
+        >
+          <IconButton disabled={dancerData.length >= 3} icon={<Icon icon="plus" />}>
+            Add Dancer
+          </IconButton>
+        </Whisper>
+        <IconButton icon={<Icon icon="clock-o" />} onClick={() => setStartTime(new Date().toISOString())}>
+          Reset Start Time
+        </IconButton>
+      </ButtonToolbar>
     </div>
   );
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Divider } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
-import ExecutedDanceTable from '../ExecutedDanceTable';
+import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
 import { get } from 'lodash';
 
@@ -86,7 +86,14 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Moves</span>
-          <ExecutedDanceTable data={predictedData} expectedDanceData={expectedDanceData} />
+          <PerformanceTable data={predictedData} expectedData={expectedDanceData} type="move" />
+        </div>
+      </div>
+      <Divider />
+      <div className="sectionContainer">
+        <div className="textContainer">
+          <span className="subTitle">Executed Dance Positions</span>
+          <PerformanceTable data={predictedData} expectedData={expectedPositionData} type="position" />
         </div>
       </div>
       <Divider />
