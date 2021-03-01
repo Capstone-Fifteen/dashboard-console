@@ -6,6 +6,7 @@ const SESSION_BY_PK_QUERY = gql`
       id
       name
       start_time
+      end_time
       participants {
         device {
           id
@@ -15,7 +16,7 @@ const SESSION_BY_PK_QUERY = gql`
           name
         }
         expected_moves
-        expected_position
+        expected_positions
       }
     }
   }

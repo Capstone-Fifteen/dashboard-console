@@ -1,0 +1,11 @@
+.sessionHeaderContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessionInfoContainer {
+  display: flex;
+  flex-direction: column;
+}

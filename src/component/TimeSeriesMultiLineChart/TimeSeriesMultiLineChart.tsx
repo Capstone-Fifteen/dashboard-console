@@ -14,6 +14,7 @@ import {
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 import { takeRight } from 'lodash';
 import { epochTimeFormatter, percentageFormatter } from '../../utils/numeric';
+import { isNumber } from 'lodash';
 
 interface Props {
   data: any[];
@@ -25,12 +26,12 @@ const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, refere
   const renderLine = () =>
     data.map((item: any, index: number) => (
       <Line
-        key={item.deviceId}
+        key={item.id}
         type="monotone"
         dataKey="value"
         data={takeRight(item.data, 10)}
         stroke={LINE_COLOR_PALETTE[index]}
-        name={`Device ID: ${item.deviceId}`}
+        name={isNumber(item.id) ? `Device ID: ${item.id}` : item.id}
         dot={false}
       />
     ));
@@ -46,7 +47,10 @@ const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, refere
           domain={['auto', 'auto']}
           name="Time"
         />
-        <YAxis tickFormatter={(value) => (percentage ? percentageFormatter(value) : value)} />
+        <YAxis
+          tickFormatter={(value) => (percentage ? percentageFormatter(value) : value)}
+          domain={percentage ? [0, 1] : ['auto', 'auto']}
+        />
         <Tooltip
           labelFormatter={epochTimeFormatter}
           formatter={(value: any) => (percentage ? percentageFormatter(value) : value)}

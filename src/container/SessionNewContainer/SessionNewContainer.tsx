@@ -33,7 +33,7 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
       delete tempFormObject[value];
       setFormObject({ ...tempFormObject });
     } else {
-      setFormObject({ ...formObject, [value]: { device_id: null, expected_moves: '', expected_position: '' } });
+      setFormObject({ ...formObject, [value]: { device_id: null, expected_moves: '', expected_positions: '' } });
     }
   };
 
@@ -133,7 +133,7 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
         </Column>
         <Column flexGrow={1}>
           <HeaderCell>Expected Positions</HeaderCell>
-          <InputCell idKey="id" dataKey="expected_position" formObject={formObject} onChange={handleFormValues} />
+          <InputCell idKey="id" dataKey="expected_positions" formObject={formObject} onChange={handleFormValues} />
         </Column>
       </Table>
       <div className="buttonContainer">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 import { percentageFormatter } from '../../utils/numeric';
+import { isNumber } from 'lodash';
 
 interface Props {
   data: any[];
@@ -27,9 +28,13 @@ const AccuracyBarChart: React.FunctionComponent<Props> = ({ data, percentage }) 
           tickFormatter={(value) => (percentage ? percentageFormatter(value) : value)}
           domain={percentage ? [0, 1] : ['auto', 'auto']}
         />
-        <YAxis type="category" dataKey="deviceId" tickFormatter={(value) => `Device ID: ${value}`} />
+        <YAxis
+          type="category"
+          dataKey="id"
+          tickFormatter={(value) => (isNumber(value) ? `Device ID: ${value}` : value)}
+        />
         <Tooltip
-          labelFormatter={(label) => `Device ID: ${label}`}
+          labelFormatter={(label) => (isNumber(label) ? `Device ID: ${label}` : label)}
           formatter={(value: any) => (percentage ? percentageFormatter(value) : value)}
           labelStyle={{ color: 'black' }}
         />

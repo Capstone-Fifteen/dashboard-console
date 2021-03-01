@@ -3,9 +3,9 @@ import { useQuery } from '@apollo/client';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
 import { Alert, Panel, Table } from 'rsuite';
 import { get } from 'lodash';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ROUTES from '../../constant/Routes';
+import { isoDateTimeFormatter } from '../../utils/numeric';
 
 const SessionListContainer: React.FunctionComponent<any> = () => {
   const { loading, error, data } = useQuery(ALL_SESSION_QUERY);
@@ -28,12 +28,12 @@ const SessionListContainer: React.FunctionComponent<any> = () => {
         </Column>
         <Column align="center" flexGrow={1}>
           <HeaderCell>Start Time</HeaderCell>
-          <Cell>{(rowData: any) => moment(rowData['start_time']).format('llll')}</Cell>
+          <Cell>{(rowData: any) => isoDateTimeFormatter(rowData['start_time'])}</Cell>
         </Column>
         <Column align="center" flexGrow={1}>
           <HeaderCell>End Time</HeaderCell>
           <Cell>
-            {(rowData: any) => (rowData['end_time'] ? moment(rowData['end_time']).format('llll') : 'In Progress')}
+            {(rowData: any) => (rowData['end_time'] ? isoDateTimeFormatter(rowData['end_time']) : 'In Progress')}
           </Cell>
         </Column>
         <Column align="center" flexGrow={1}>

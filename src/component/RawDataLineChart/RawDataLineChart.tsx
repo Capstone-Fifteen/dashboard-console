@@ -14,7 +14,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
     data &&
     data.map((value) => ({
       ...value,
-      timestamp: new Date(value['created_at']).getTime(),
+      timestamp: new Date(value['created_at']).getTime(), // convert timestamp to epoch time for chart support
     }));
 
   const extractLineData = () => {

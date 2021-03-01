@@ -11,35 +11,40 @@ interface Props {
   predictedData: any[];
   rawData: any[];
   expectedData: any[];
+  session?: boolean;
 }
 
-const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData, expectedData }) => {
+const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData, expectedData, session }) => {
   // Restructure expectedData so that deviceId has a type int
-  const expectedDeviceData = expectedData.map((data) => ({ ...data, device_id: parseInt(data['device_id']) }));
 
-  const emgData = expectedDeviceData.map(({ device_id }) => {
+  const expectedDeviceData = expectedData.map((data) => ({
+    ...data,
+    device_id: session ? data['device']['id'] : parseInt(data['device_id']),
+  }));
+
+  const emgData = expectedDeviceData.map(({ device_id, dancer }) => {
     const filteredData = rawData
       .filter((data) => data['device_id'] === device_id)
       .map((data) => ({ timestamp: new Date(data['created_at']).getTime(), value: data['emg_reading'] }));
 
     return {
-      deviceId: device_id,
+      id: session ? dancer.name : device_id, // we use dancer's name as the identifier
       data: filteredData,
     };
   });
 
-  const delayData = expectedDeviceData.map(({ device_id }) => {
+  const delayData = expectedDeviceData.map(({ device_id, dancer }) => {
     const filteredData = predictedData
       .filter((data) => data['device_id'] === device_id)
       .map((data) => ({ timestamp: new Date(data['created_at']).getTime(), value: data['delay'] }));
 
     return {
-      deviceId: device_id,
+      id: session ? dancer.name : device_id,
       data: filteredData,
     };
   });
 
-  const accuracyData = expectedDeviceData.map(({ device_id, expected_moves, expected_positions }) => {
+  const accuracyData = expectedDeviceData.map(({ device_id, expected_moves, expected_positions, dancer }) => {
     // get predicted data for the specific device ID
     const filteredData = predictedData.filter((data) => data['device_id'] === device_id);
 
@@ -83,7 +88,7 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData,
 
     return {
       moveAccuracy: {
-        deviceId: device_id,
+        id: session ? dancer.name : device_id,
         data: moveAccuracyRate.map((value, index) => ({
           timestamp: timestamp[index],
           value,
@@ -91,7 +96,7 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ predictedData, rawData,
         average: mean(moveAccuracyRate),
       },
       positionAccuracy: {
-        deviceId: device_id,
+        id: session ? dancer.name : device_id,
         data: positionAccuracyRate.map((value, index) => ({
           timestamp: timestamp[index],
           value,
