@@ -14,6 +14,7 @@ import {
 import { dancerAddModel } from '../../constant/FormModel';
 import { useMutation } from '@apollo/client';
 import ADD_DANCER_MUTATION from '../../graphql/mutation/AddDancerMutation';
+import ALL_DANCER_QUERY from '../../graphql/query/AllDancerQuery';
 
 const DancerAddContainer: React.FunctionComponent<any> = () => {
   const initialFormValueState = { name: '', gender: undefined };
@@ -22,16 +23,19 @@ const DancerAddContainer: React.FunctionComponent<any> = () => {
     variables: {
       dancer: formValue,
     },
+    onCompleted: () => {
+      if (error) {
+        Alert.error(`ERROR: Unable to add dancer\n Error Code: ${error}`);
+      } else {
+        Alert.success(`SUCCESS: Dancer added successfully`);
+        setFormValue(initialFormValueState);
+      }
+    },
+    refetchQueries: [{ query: ALL_DANCER_QUERY }],
   });
 
   const handleSubmission = async () => {
     await addDancer();
-    if (error) {
-      Alert.error(`ERROR: Unable to add dancer\n Error Code: ${error}`);
-    } else {
-      Alert.success(`SUCCESS: Dancer added successfully`);
-      setFormValue(initialFormValueState);
-    }
   };
 
   return (

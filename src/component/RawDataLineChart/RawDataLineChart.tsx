@@ -1,8 +1,8 @@
 import React from 'react';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import moment from 'moment';
 import { takeRight } from 'lodash';
 import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
+import { epochTimeFormatter } from '../../utils/numeric';
 
 interface Props {
   data: any[];
@@ -14,7 +14,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
     data &&
     data.map((value) => ({
       ...value,
-      created_at: moment(value['created_at']).format('LTS'),
+      timestamp: new Date(value['created_at']).getTime(), // convert timestamp to epoch time for chart support
     }));
 
   const extractLineData = () => {
@@ -26,6 +26,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
           isAnimationActive={false}
           dataKey={reading}
           stroke={LINE_COLOR_PALETTE[index]}
+          dot={false}
         />
       ));
     }
@@ -36,6 +37,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
         isAnimationActive={false}
         dataKey={reading}
         stroke={LINE_COLOR_PALETTE[index]}
+        dot={false}
       />
     ));
   };
@@ -52,9 +54,15 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="created_at" />
+        <XAxis
+          type="number"
+          dataKey="timestamp"
+          tickFormatter={epochTimeFormatter}
+          domain={['auto', 'auto']}
+          name="Time"
+        />
         <YAxis />
-        <Tooltip />
+        <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
         {extractLineData()}
       </LineChart>

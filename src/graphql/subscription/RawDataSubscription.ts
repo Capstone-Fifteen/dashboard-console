@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const RAW_DATA_SUBSCRIPTION = gql`
-  subscription RawDataSubscription {
-    raw_data {
+  subscription RawDataSubscription($deviceId: [Int!], $startTime: timestamptz, $endTime: timestamptz) {
+    raw_data(where: { device_id: { _in: $deviceId }, created_at: { _gte: $startTime, _lte: $endTime } }) {
       created_at
       device_id
       emg_reading

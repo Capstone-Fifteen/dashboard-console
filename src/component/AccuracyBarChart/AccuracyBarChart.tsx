@@ -1,23 +1,15 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
+import { percentageFormatter } from '../../utils/numeric';
+import { isNumber } from 'lodash';
 
-const AccuracyBarChart: React.FunctionComponent<any> = () => {
-  const data = [
-    {
-      name: 'John',
-      accuracy: 0.6,
-    },
-    {
-      name: 'Sally',
-      accuracy: 0.8,
-    },
-    {
-      name: 'Michael',
-      accuracy: 0.8,
-    },
-  ];
+interface Props {
+  data: any[];
+  percentage?: boolean;
+}
 
+const AccuracyBarChart: React.FunctionComponent<Props> = ({ data, percentage }) => {
   return (
     <ResponsiveContainer width={500} height={300}>
       <BarChart
@@ -31,10 +23,22 @@ const AccuracyBarChart: React.FunctionComponent<any> = () => {
         layout="vertical"
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis type="number" />
-        <YAxis type="category" dataKey="name" />
-        <Tooltip />
-        <Bar dataKey="accuracy">
+        <XAxis
+          type="number"
+          tickFormatter={(value) => (percentage ? percentageFormatter(value) : value)}
+          domain={percentage ? [0, 1] : ['auto', 'auto']}
+        />
+        <YAxis
+          type="category"
+          dataKey="id"
+          tickFormatter={(value) => (isNumber(value) ? `Device ID: ${value}` : value)}
+        />
+        <Tooltip
+          labelFormatter={(label) => (isNumber(label) ? `Device ID: ${label}` : label)}
+          formatter={(value: any) => (percentage ? percentageFormatter(value) : value)}
+          labelStyle={{ color: 'black' }}
+        />
+        <Bar dataKey="average">
           {data.map((_, index) => (
             <Cell key={index} fill={LINE_COLOR_PALETTE[index]} />
           ))}
