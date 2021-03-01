@@ -12,7 +12,6 @@ import {
   YAxis,
 } from 'recharts';
 import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
-import { takeRight } from 'lodash';
 import { epochTimeFormatter, percentageFormatter } from '../../utils/numeric';
 import { isNumber } from 'lodash';
 
@@ -29,10 +28,11 @@ const TimeSeriesMultiLineChart: React.FunctionComponent<Props> = ({ data, refere
         key={item.id}
         type="monotone"
         dataKey="value"
-        data={takeRight(item.data, 10)}
+        data={item.data}
         stroke={LINE_COLOR_PALETTE[index]}
         name={isNumber(item.id) ? `Device ID: ${item.id}` : item.id}
         dot={false}
+        isAnimationActive={false}
       />
     ));
 
