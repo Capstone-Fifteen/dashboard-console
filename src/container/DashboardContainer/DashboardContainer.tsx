@@ -12,7 +12,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
   const [dancerData, setDancerData] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>(initialFormState);
-  const [startTime, setStartTime] = useState<string>('2021-02-28T03:35:58.68+00:00');
+  const [startTime, setStartTime] = useState<string>(new Date().toISOString());
 
   const variables = {
     deviceId: dancerData.map((data: any) => data['device_id']),

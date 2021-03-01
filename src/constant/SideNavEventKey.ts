@@ -1,5 +1,4 @@
 export const DASHBOARD_EVENT_KEY = 'DASHBOARD_EK';
-export const OVERVIEW_EVENT_KEY = 'OVERVIEW_EK';
 export const DANCER_EVENT_KEY = 'DANCER_EK';
 export const NEW_DANCER_EVENT_KEY = 'NEW_DANCER_EK';
 export const ALL_DANCER_EVENT_KEY = 'ALL_DANCER_EK';

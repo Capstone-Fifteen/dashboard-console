@@ -10,7 +10,6 @@ import {
   NEW_DANCER_EVENT_KEY,
   NEW_DEVICE_EVENT_KEY,
   NEW_SESSION_EVENT_KEY,
-  OVERVIEW_EVENT_KEY,
   ALL_SESSION_EVENT_KEY,
   SESSION_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
@@ -45,15 +44,6 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                 to={ROUTES.DASHBOARD}
               >
                 Live
-              </Nav.Item>
-              <Nav.Item
-                eventKey={OVERVIEW_EVENT_KEY}
-                active={checkActive(OVERVIEW_EVENT_KEY)}
-                icon={<Icon icon="dashboard" />}
-                componentClass={Link}
-                to={ROUTES.OVERVIEW}
-              >
-                Overview
               </Nav.Item>
               <Dropdown
                 eventKey={DEVICE_EVENT_KEY}

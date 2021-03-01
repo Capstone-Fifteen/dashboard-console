@@ -1,7 +1,6 @@
 const ROUTES = {
   ROOT: '/',
   DASHBOARD: '/dashboard',
-  OVERVIEW: '/overview',
   DANCER_NEW: '/dancer/new',
   DANCER_INFO: '/dancer/:id',
   DANCER_ALL: '/dancer',
