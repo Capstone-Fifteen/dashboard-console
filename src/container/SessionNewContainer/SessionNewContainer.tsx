@@ -7,7 +7,7 @@ import ALL_DEVICE_QUERY from '../../graphql/query/AllDeviceQuery';
 import ADD_SESSION_MUTATION from '../../graphql/mutation/AddSessionMutation';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
 import { CheckCell, ImageCell, InputCell, SelectPickerCell } from '../../component/SessionTableCell';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ROUTES from '../../constant/Routes';
 import './SessionNewContainer.css';
 
@@ -15,6 +15,7 @@ import './SessionNewContainer.css';
 const SessionNewContainer: React.FunctionComponent<any> = () => {
   const [formObject, setFormObject] = useState<any>({});
   const [sessionName, setSessionName] = useState<string>('');
+  const routeHistory = useHistory();
 
   const { Column, HeaderCell, Cell } = Table;
 
@@ -73,13 +74,15 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
       startTime: new Date().toISOString(),
       participants: getParticipantArray(),
     },
-    onCompleted: () => {
+    onCompleted: ({ session }) => {
       if (error) {
         Alert.error(`ERROR: Unable to start the session\n Error Code: ${error}`);
       } else {
         Alert.success(`SUCCESS: Session added successfully`);
         setSessionName('');
         setFormObject({});
+
+        routeHistory.push(`${ROUTES.SESSION_ALL}/${session.id}`);
       }
     },
     refetchQueries: [
@@ -137,13 +140,7 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
         </Column>
       </Table>
       <div className="buttonContainer">
-        <Button
-          appearance="primary"
-          componentClass={Link}
-          to={ROUTES.DASHBOARD}
-          disabled={!formIsValid()}
-          onClick={() => addSession()}
-        >
+        <Button appearance="primary" disabled={!formIsValid()} onClick={() => addSession()}>
           Start Session
         </Button>
       </div>
