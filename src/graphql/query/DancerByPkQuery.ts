@@ -6,7 +6,7 @@ const DANCER_BY_PK_QUERY = gql`
       name
       gender
       last_updated
-      dancer_analytics(order_by: { created_at: desc }) {
+      dancer_analytics(order_by: { created_at: asc }) {
         session {
           id
           name

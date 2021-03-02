@@ -2,11 +2,12 @@ import React from 'react';
 import { Alert, Col, Icon, IconButton, Loader, Panel, Row, Table } from 'rsuite';
 import Card from '../../component/Card';
 import AccuracyLineChart from '../../component/AccuracyLineChart';
+import EnergyBarChart from '../../component/EnergyBarChart';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
 import ROUTES from '../../constant/Routes';
 import { useQuery } from '@apollo/client';
-import { get } from 'lodash';
+import { get, takeRight } from 'lodash';
 import DANCER_BY_PK_QUERY from '../../graphql/query/DancerByPkQuery';
 import './DancerProfileContainer.css';
 
@@ -127,13 +128,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
       <Row style={{ marginBottom: 10 }}>
         <Col md={12} sm={24}>
           <Card header="Average Fatigue Level Over Session">
-            <AccuracyLineChart
-              threshold={70}
-              data={sessionAggregateData}
-              dataKey="emgReading"
-              domain={['auto', 'auto']}
-              name="Fatigue"
-            />
+            <EnergyBarChart data={takeRight(sessionAggregateData, 5)} dataKey="emgReading" name="Calories Burned" />
           </Card>
         </Col>
         <Col md={12} sm={24}>
