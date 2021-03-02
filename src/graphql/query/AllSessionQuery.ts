@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 const ALL_SESSION_QUERY = gql`
   query AllSessionQuery {
-    session {
+    session(order_by: { id: asc }) {
       id
       name
       start_time
