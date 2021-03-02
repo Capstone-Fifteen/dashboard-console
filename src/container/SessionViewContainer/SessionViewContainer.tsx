@@ -1,15 +1,18 @@
 import React from 'react';
-import { Alert, Icon, IconButton, Loader, Panel, PanelGroup } from 'rsuite';
+import { Alert, Col, Icon, IconButton, Loader, Panel, PanelGroup } from 'rsuite';
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import { get } from 'lodash';
-import AnalyticsViewContainer from './AnalyticsViewContainer';
+import { get, last, meanBy } from 'lodash';
+import { isoDateTimeFormatter } from '../../utils/numeric';
+import IndividualAnalytics from '../../component/IndividualAnalytics';
+import TeamAnalytics from '../../component/TeamAnalytics';
+import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import SESSION_BY_PK_QUERY from '../../graphql/query/SessionByPkQuery';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionByPkMutation';
+import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
-import { isoDateTimeFormatter } from '../../utils/numeric';
 import './SessionViewContainer.css';
 
 const SessionViewContainer: React.FunctionComponent<any> = () => {
@@ -19,16 +22,6 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
     variables: {
       id,
     },
-  });
-
-  const [updateSession, { error: updateError }] = useMutation(UPDATE_SESSION_BY_PK_MUTATION, {
-    refetchQueries: [
-      {
-        query: SESSION_BY_PK_QUERY,
-        variables: { id },
-      },
-      { query: ALL_SESSION_QUERY },
-    ],
   });
 
   const sessionInfo = get(sessionData, 'sessionInfo', null);
@@ -51,6 +44,58 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
 
   const rawData = get(rawDataSubscription, 'raw_data', []);
   const predictedData = get(predictedDataSubscription, 'predicted_data', []);
+  const dancerData = get(sessionInfo, 'participants', []);
+
+  const expectedDeviceData = dancerData.map((data: any) => ({
+    ...data,
+    device_id: data['device']['id'],
+  }));
+
+  const emgData = getEmgData(expectedDeviceData, rawData, true);
+
+  const delayData = getDelayData(expectedDeviceData, predictedData, true);
+
+  const accuracyData = getAccuracyData(expectedDeviceData, predictedData, true);
+
+  const getDancerAnalytics = () => {
+    const dancerId = expectedDeviceData.map(({ dancer }: any) => dancer.id);
+
+    return dancerId.map((id: number) => {
+      const associatedDelayData = delayData.find(({ dancerId }) => dancerId === id);
+      const associatedEmgData = emgData.find(({ dancerId }) => dancerId === id);
+      const associatedAccuracy = accuracyData.find(
+        ({ moveAccuracy, positionAccuracy }) => moveAccuracy.dancerId === id || positionAccuracy.dancerId === id,
+      );
+      const moveAccuracy = associatedAccuracy && last(associatedAccuracy.moveAccuracy.data);
+      const positionAccuracy = associatedAccuracy && last(associatedAccuracy.positionAccuracy.data);
+
+      return {
+        dancer_id: id,
+        session_id: sessionInfo.id,
+        average_delay: associatedDelayData && meanBy(associatedDelayData.data, (data) => data.value).toFixed(2),
+        average_emg: associatedEmgData && meanBy(associatedEmgData.data, (data) => data.value).toFixed(2),
+        move_accuracy: moveAccuracy && moveAccuracy.value,
+        position_accuracy: positionAccuracy && positionAccuracy.value,
+      };
+    });
+  };
+
+  const [updateSession, { error: updateError }] = useMutation(UPDATE_SESSION_BY_PK_MUTATION, {
+    refetchQueries: [
+      {
+        query: SESSION_BY_PK_QUERY,
+        variables: { id },
+      },
+      { query: ALL_SESSION_QUERY },
+    ],
+  });
+
+  const [updateDancerAnalytic, { error: addAnalyticsError }] = useMutation(ADD_DANCER_ANALYTIC_MUTATION, {
+    variables: {
+      data: getDancerAnalytics(),
+    },
+    onCompleted: () => updateSession({ variables: { id, endTime: new Date().toISOString() } }),
+  });
 
   if (loading) {
     return <Loader />;
@@ -63,6 +108,25 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   if (updateError) {
     Alert.error('ERROR: Unable to end session');
   }
+
+  if (addAnalyticsError) {
+    Alert.error('ERROR: Unable to update dancer analytics');
+  }
+
+  const renderIndividualAnalytics = () => {
+    return dancerData.map((dancer: any, index: number) => (
+      <Col md={24 / dancerData.length} sm={24} key={index}>
+        <Panel bordered header={dancer['dancer']['name']}>
+          <IndividualAnalytics
+            predictedData={predictedData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
+            rawData={rawData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
+            expectedDanceData={dancer['expected_moves'].split(',').map((i: string) => i.trim())}
+            expectedPositionData={dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))}
+          />
+        </Panel>
+      </Col>
+    ));
+  };
 
   return (
     <PanelGroup bordered>
@@ -78,7 +142,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
             {!sessionInfo['end_time'] && (
               <IconButton
                 icon={<Icon icon="stop" />}
-                onClick={() => updateSession({ variables: { id, endTime: new Date().toISOString() } })}
+                onClick={() => updateDancerAnalytic()}
                 color="red"
                 appearance="ghost"
               >
@@ -88,7 +152,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
           </div>
         }
       />
-      <AnalyticsViewContainer predictedData={predictedData} rawData={rawData} dancerData={sessionInfo.participants} />
+      <Panel header={<h4>Individual Analytics</h4>} collapsible defaultExpanded>
+        {renderIndividualAnalytics()}
+      </Panel>
+      <Panel header={<h4>Team Analytics</h4>} collapsible defaultExpanded>
+        <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
+      </Panel>
     </PanelGroup>
   );
 };

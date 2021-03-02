@@ -6,6 +6,7 @@ import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDat
 import { Button, ButtonToolbar, Col, Icon, IconButton, Input, Panel, PanelGroup, Popover, Row, Whisper } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
 import { get } from 'lodash';
+import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import './DashboardContainer.css';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
@@ -37,6 +38,17 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
       [dataKey]: value,
     }));
   };
+
+  const expectedDeviceData = dancerData.map((data: any) => ({
+    ...data,
+    device_id: parseInt(data['device_id']),
+  }));
+
+  const emgData = getEmgData(expectedDeviceData, rawData);
+
+  const delayData = getDelayData(expectedDeviceData, predictedData);
+
+  const accuracyData = getAccuracyData(expectedDeviceData, predictedData);
 
   const renderAddForm = () => (
     <div className="addFormContainer">
@@ -120,7 +132,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
         <Row>{renderIndividualAnalytics()}</Row>
       </Panel>
       <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
-        <TeamAnalytics rawData={rawData} predictedData={predictedData} expectedData={dancerData} />
+        <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
       </Panel>
     </PanelGroup>
   );

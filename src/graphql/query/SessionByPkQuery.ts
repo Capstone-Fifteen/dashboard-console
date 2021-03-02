@@ -13,6 +13,7 @@ const SESSION_BY_PK_QUERY = gql`
           name
         }
         dancer {
+          id
           name
         }
         expected_moves
