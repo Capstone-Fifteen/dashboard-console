@@ -88,7 +88,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
           </div>
         }
       />
-      <AnalyticsViewContainer predictedData={predictedData} rawData={rawData} dancerData={sessionInfo.participants} />
+      <AnalyticsViewContainer
+        predictedData={predictedData}
+        rawData={rawData}
+        dancerData={sessionInfo.participants}
+        sessionId={sessionInfo.id}
+      />
     </PanelGroup>
   );
 };

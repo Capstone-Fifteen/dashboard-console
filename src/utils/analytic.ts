@@ -90,6 +90,7 @@ export const getAccuracyData = (expectedDeviceData: any[], predictedData: any[],
     return {
       moveAccuracy: {
         id: session ? dancer.name : device_id,
+        dancerId: session && dancer.id,
         data: moveAccuracyRate.map((value, index) => ({
           timestamp: timestamp[index],
           value,
@@ -98,6 +99,7 @@ export const getAccuracyData = (expectedDeviceData: any[], predictedData: any[],
       },
       positionAccuracy: {
         id: session ? dancer.name : device_id,
+        dancerId: session && dancer.id,
         data: positionAccuracyRate.map((value, index) => ({
           timestamp: timestamp[index],
           value,
