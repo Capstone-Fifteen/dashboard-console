@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Col, Loader, Panel, Row, Table } from 'rsuite';
+import { Alert, Col, Icon, IconButton, Loader, Panel, Row, Table } from 'rsuite';
 import Card from '../../component/Card';
 import AccuracyLineChart from '../../component/AccuracyLineChart';
 import moment from 'moment';
@@ -8,11 +8,12 @@ import ROUTES from '../../constant/Routes';
 import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
 import DANCER_BY_PK_QUERY from '../../graphql/query/DancerByPkQuery';
+import './DancerProfileContainer.css';
 
 const DancerProfileContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
 
-  const { loading, error, data } = useQuery(DANCER_BY_PK_QUERY, {
+  const { loading, error, data, refetch } = useQuery(DANCER_BY_PK_QUERY, {
     variables: {
       id,
     },
@@ -62,9 +63,14 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
   return (
     <Panel
       header={
-        <div>
-          <h3>Dancer Profile</h3>
-          <h5>{dancerInfo.name}</h5>
+        <div className="profileHeaderContainer">
+          <div>
+            <h3>Dancer Profile</h3>
+            <h5>{dancerInfo.name}</h5>
+          </div>
+          <IconButton icon={<Icon icon="refresh" />} onClick={() => refetch()}>
+            Refresh
+          </IconButton>
         </div>
       }
       bordered
@@ -89,7 +95,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
         </Col>
         <Col md={6} sm={8}>
           <Card header="Average Rhythmic Performance">
-            <h4>{avgData['average_delay']}</h4>
+            <h4>{avgData['average_delay'].toFixed(2)} s</h4>
             <h6>{getDelayType(avgData['average_delay'])}</h6>
           </Card>
         </Col>
