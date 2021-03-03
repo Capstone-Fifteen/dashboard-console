@@ -1,6 +1,5 @@
 import React from 'react';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { takeRight } from 'lodash';
 import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
 import { epochTimeFormatter } from '../../utils/numeric';
 
@@ -45,7 +44,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   return (
     <ResponsiveContainer width={500} height={300}>
       <LineChart
-        data={takeRight(graphData, 30)}
+        data={graphData}
         margin={{
           top: 5,
           right: 30,
