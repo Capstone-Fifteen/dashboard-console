@@ -187,7 +187,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
       </Row>
       <Row style={{ marginBottom: 10 }}>
         <Col md={12} sm={24}>
-          <Card header="Average Fatigue Level Over Session">
+          <Card header="Average Calories Burned Per Session">
             <EnergyBarChart data={takeRight(sessionAggregateData, 5)} dataKey="emgReading" name="Calories Burned" />
           </Card>
         </Col>
