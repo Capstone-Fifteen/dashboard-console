@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Col, Icon, IconButton, Loader, Panel, Row, Table } from 'rsuite';
+import { Alert, Col, Icon, IconButton, Loader, Panel, Row, Table, Tooltip, Whisper } from 'rsuite';
 import Card from '../../component/Card';
 import AccuracyLineChart from '../../component/AccuracyLineChart';
 import EnergyBarChart from '../../component/EnergyBarChart';
@@ -10,6 +10,8 @@ import { useQuery } from '@apollo/client';
 import { get, takeRight } from 'lodash';
 import DANCER_BY_PK_QUERY from '../../graphql/query/DancerByPkQuery';
 import './DancerProfileContainer.css';
+import DANCER_ANALYTIC_AGGREGATE_QUERY from '../../graphql/query/DancerAnalyticAggregateQuery';
+import { percentageFormatter } from '../../utils/numeric';
 
 const DancerProfileContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
@@ -19,6 +21,9 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
       id,
     },
   });
+  const { loading: aggregateLoading, data: aggregateData, refetch: refetchAggregate } = useQuery(
+    DANCER_ANALYTIC_AGGREGATE_QUERY,
+  );
 
   const dancerInfo = get(data, 'dancer');
   const totalSession = get(dancerInfo, 'participants_aggregate.aggregate.count');
@@ -33,15 +38,22 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
     emgReading: data['average_emg'],
     delayReading: data['average_delay'],
   }));
+  const aggregate = get(aggregateData, 'dancer_analytic_aggregate.aggregate');
 
   const { Column, HeaderCell, Cell } = Table;
 
-  const getGrade = (value: number) => {
-    if (value >= 0.9) return 'S';
-    if (value < 0.9 && value >= 0.8) return 'A';
-    if (value < 0.8 && value >= 0.7) return 'B';
-    if (value < 0.7 && value >= 0.6) return 'C';
-    if (value < 0.6 && value >= 0.5) return 'D';
+  const getGrade = (value: number, mean: number, std: number) => {
+    // Assuming normally distributed, we use z * std + mean to find percentile value
+    const ninetiethPercentile = 1.28 * std + mean;
+    const eightiethPercentile = 0.84 * std + mean;
+    const seventiethPercentile = 0.52 * std + mean;
+    const sixtiethPercentile = 0.25 * std + mean;
+
+    if (value >= ninetiethPercentile) return 'S';
+    if (value < ninetiethPercentile && value >= eightiethPercentile) return 'A';
+    if (value < eightiethPercentile && value >= seventiethPercentile) return 'B';
+    if (value < seventiethPercentile && value >= sixtiethPercentile) return 'C';
+    if (value < sixtiethPercentile && value >= mean) return 'D';
     return 'E';
   };
 
@@ -55,7 +67,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
     return 'On Time';
   };
 
-  if (loading || !dancerInfo) return <Loader />;
+  if (loading || aggregateLoading || !dancerInfo) return <Loader />;
 
   if (error) {
     Alert.error('ERROR: Unable to load dancer');
@@ -69,7 +81,13 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
             <h3>Dancer Profile</h3>
             <h5>{dancerInfo.name}</h5>
           </div>
-          <IconButton icon={<Icon icon="refresh" />} onClick={() => refetch()}>
+          <IconButton
+            icon={<Icon icon="refresh" />}
+            onClick={() => {
+              refetch();
+              refetchAggregate();
+            }}
+          >
             Refresh
           </IconButton>
         </div>
@@ -85,13 +103,55 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
         <Col md={6} sm={8}>
           <Card header="Average Dance Move Accuracy">
             <h4>{(avgData['move_accuracy'] * 100).toFixed(2)}%</h4>
-            <h6>Grade: {getGrade(avgData['move_accuracy'])}</h6>
+            <Whisper
+              placement="bottom"
+              trigger="hover"
+              speaker={
+                <Tooltip>
+                  <div>Min: {percentageFormatter(aggregate['min']['move_accuracy'])}</div>
+                  <div>Max: {percentageFormatter(aggregate['max']['move_accuracy'])}</div>
+                  <div>Mean: {percentageFormatter(aggregate['avg']['move_accuracy'])}</div>
+                  <div>Std: {aggregate['stddev']['move_accuracy'].toFixed(2)}</div>
+                  <div>Var: {aggregate['variance']['move_accuracy'].toFixed(2)}</div>
+                </Tooltip>
+              }
+            >
+              <h6>
+                Grade:{' '}
+                {getGrade(
+                  avgData['move_accuracy'],
+                  aggregate['avg']['move_accuracy'],
+                  aggregate['stddev']['move_accuracy'],
+                )}
+              </h6>
+            </Whisper>
           </Card>
         </Col>
         <Col md={6} sm={8}>
           <Card header="Average Dance Position Accuracy">
             <h4>{(avgData['position_accuracy'] * 100).toFixed(2)}%</h4>
-            <h6>Grade: {getGrade(avgData['position_accuracy'])}</h6>
+            <Whisper
+              placement="bottom"
+              trigger="hover"
+              speaker={
+                <Tooltip>
+                  <div>Min: {percentageFormatter(aggregate['min']['position_accuracy'])}</div>
+                  <div>Max: {percentageFormatter(aggregate['max']['position_accuracy'])}</div>
+                  <div>Mean: {percentageFormatter(aggregate['avg']['position_accuracy'])}</div>
+                  <div>Std: {aggregate['stddev']['position_accuracy'].toFixed(2)}</div>
+                  <div>Var: {aggregate['variance']['position_accuracy'].toFixed(2)}</div>
+                </Tooltip>
+              }
+            >
+              <h6>
+                Grade:{' '}
+                {getGrade(
+                  avgData['position_accuracy'],
+                  aggregate['avg']['position_accuracy'],
+                  aggregate['stddev']['position_accuracy'],
+                )}
+              </h6>
+            </Whisper>
           </Card>
         </Col>
         <Col md={6} sm={8}>
