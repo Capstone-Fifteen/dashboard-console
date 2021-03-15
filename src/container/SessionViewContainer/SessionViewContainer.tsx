@@ -14,6 +14,7 @@ import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionB
 import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
 import './SessionViewContainer.css';
+import LoadingData from '../../component/LoadingData';
 
 const SessionViewContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
@@ -58,7 +59,9 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   const accuracyData = getAccuracyData(expectedDeviceData, predictedData, true);
 
   const getDancerAnalytics = () => {
-    const dancerId = expectedDeviceData.map(({ dancer }: any) => dancer.id);
+    const dancerId = expectedDeviceData
+      .filter((data: any) => data['expected_moves']?.length > 0 && data['expected_positions']?.length > 0)
+      .map(({ dancer }: any) => dancer.id);
 
     return dancerId.map((id: number) => {
       const associatedDelayData = delayData.find(({ dancerId }) => dancerId === id);
@@ -74,8 +77,8 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
         session_id: sessionInfo.id,
         average_delay: associatedDelayData && meanBy(associatedDelayData.data, (data) => data.value).toFixed(2),
         average_emg: associatedEmgData && meanBy(associatedEmgData.data, (data) => data.value).toFixed(2),
-        move_accuracy: moveAccuracy && moveAccuracy.value,
-        position_accuracy: positionAccuracy && positionAccuracy.value,
+        move_accuracy: moveAccuracy?.value,
+        position_accuracy: positionAccuracy?.value,
       };
     });
   };
@@ -120,8 +123,13 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
           <IndividualAnalytics
             predictedData={predictedData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
             rawData={rawData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
-            expectedDanceData={dancer['expected_moves'].split(',').map((i: string) => i.trim())}
-            expectedPositionData={dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))}
+            expectedDanceData={
+              dancer['expected_moves'].length > 0 && dancer['expected_moves'].split(',').map((i: string) => i.trim())
+            }
+            expectedPositionData={
+              dancer['expected_positions'].length > 0 &&
+              dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
+            }
           />
         </Panel>
       </Col>
@@ -156,7 +164,11 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
         {renderIndividualAnalytics()}
       </Panel>
       <Panel header={<h4>Team Analytics</h4>} collapsible defaultExpanded>
-        <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
+        {rawData.length > 0 || predictedData.length > 0 ? (
+          <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
+        ) : (
+          <LoadingData />
+        )}
       </Panel>
     </PanelGroup>
   );

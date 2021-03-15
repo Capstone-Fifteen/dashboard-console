@@ -6,17 +6,17 @@ import ADD_DEVICE_MUTATION from '../../graphql/mutation/AddDeviceMutation';
 import ALL_DEVICE_QUERY from '../../graphql/query/AllDeviceQuery';
 
 const DeviceAddContainer: React.FunctionComponent<any> = () => {
-  const [formValue, setFormValue] = useState<any>({ deviceName: '' });
+  const [formValue, setFormValue] = useState<any>({ deviceName: '', description: '' });
   const [addDevice, { error }] = useMutation(ADD_DEVICE_MUTATION, {
     variables: {
-      wearable: { name: formValue.deviceName },
+      wearable: { name: formValue.deviceName, description: formValue.description },
     },
     onCompleted: () => {
       if (error) {
         Alert.error(`ERROR: Unable to add device\n Error Code: ${error}`);
       } else {
         Alert.success(`SUCCESS: Device added successfully`);
-        setFormValue({ deviceName: '' });
+        setFormValue({ deviceName: '', description: '' });
       }
     },
     refetchQueries: [{ query: ALL_DEVICE_QUERY }],
@@ -38,6 +38,10 @@ const DeviceAddContainer: React.FunctionComponent<any> = () => {
         <FormGroup>
           <ControlLabel>Device Name</ControlLabel>
           <FormControl name="deviceName" />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Description</ControlLabel>
+          <FormControl name="description" placeholder="MAC Address" />
         </FormGroup>
         <FormGroup>
           <ButtonToolbar>

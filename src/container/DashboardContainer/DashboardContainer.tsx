@@ -5,6 +5,7 @@ import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscriptio
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 import { Button, ButtonToolbar, Col, Icon, IconButton, Input, Panel, PanelGroup, Popover, Row, Whisper } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
+import LoadingData from '../../component/LoadingData';
 import { get } from 'lodash';
 import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import './DashboardContainer.css';
@@ -117,8 +118,13 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
           <IndividualAnalytics
             predictedData={predictedData.filter((value: any) => value['device_id'] === parseInt(dancer['device_id']))}
             rawData={rawData.filter((value: any) => value['device_id'] === parseInt(dancer['device_id']))}
-            expectedDanceData={dancer['expected_moves'].split(',').map((i: string) => i.trim())}
-            expectedPositionData={dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))}
+            expectedDanceData={
+              dancer['expected_moves'].length > 0 && dancer['expected_moves'].split(',').map((i: string) => i.trim())
+            }
+            expectedPositionData={
+              dancer['expected_positions'].length > 0 &&
+              dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
+            }
           />
         </Panel>
       </Col>
@@ -131,9 +137,15 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
         {renderAddForm()}
         <Row>{renderIndividualAnalytics()}</Row>
       </Panel>
-      <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
-        <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
-      </Panel>
+      {dancerData.length > 0 && (
+        <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
+          {rawData.length > 0 || predictedData.length > 0 ? (
+            <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
+          ) : (
+            <LoadingData />
+          )}
+        </Panel>
+      )}
     </PanelGroup>
   );
 };

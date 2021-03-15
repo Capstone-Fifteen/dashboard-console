@@ -49,7 +49,7 @@ const AuthenticatedContainer = () => {
               <SessionListContainer />
             </Route>
             <Route path={ROUTES.ROOT}>
-              <DashboardContainer />
+              <SessionListContainer />
             </Route>
           </Switch>
         </Content>

@@ -50,10 +50,13 @@ export const getAccuracyData = (expectedDeviceData: any[], predictedData: any[],
     const filteredData = predictedData.filter((data) => data['device_id'] === device_id);
 
     // get expected dance moves
-    const expectedDanceMoves = expected_moves.split(',').map((move: string) => move.trim());
+    const expectedDanceMoves =
+      expected_moves.length > 0 && expected_moves.split(',').map((move: string) => move.trim());
 
     // get expected dance positions
-    const expectedDancePositions = expected_positions.split(',').map((position: string) => parseInt(position.trim()));
+    const expectedDancePositions =
+      expected_positions.length > 0 &&
+      expected_positions.split(',').map((position: string) => parseInt(position.trim()));
     const dataLength = Math.min(filteredData.length, expectedDanceMoves.length);
 
     // accuracy of dance moves so far
