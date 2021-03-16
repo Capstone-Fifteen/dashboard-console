@@ -14,7 +14,7 @@ import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionB
 import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
 import './SessionViewContainer.css';
-import LoadingData from '../../component/LoadingData';
+import DataLoader from '../../component/DataLoader';
 
 const SessionViewContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
@@ -167,7 +167,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
         {rawData.length > 0 || predictedData.length > 0 ? (
           <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
         ) : (
-          <LoadingData />
+          <DataLoader />
         )}
       </Panel>
     </PanelGroup>

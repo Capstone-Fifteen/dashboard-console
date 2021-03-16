@@ -3,7 +3,7 @@ import { Divider } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
-import LoadingData from '../LoadingData';
+import DataLoader from '../DataLoader';
 import { get } from 'lodash';
 import './IndividualAnalytics.css';
 
@@ -42,7 +42,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   };
 
   if (!predictedData.length || !rawData.length) {
-    return <LoadingData />;
+    return <DataLoader />;
   }
 
   return (

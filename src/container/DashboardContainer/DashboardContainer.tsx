@@ -5,6 +5,7 @@ import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscriptio
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 import {
   Button,
+  ButtonGroup,
   ButtonToolbar,
   Col,
   DatePicker,
@@ -19,10 +20,11 @@ import {
   Whisper,
 } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
-import LoadingData from '../../component/LoadingData';
+import DataLoader from '../../component/DataLoader';
 import { get } from 'lodash';
 import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import './DashboardContainer.css';
+import EditDancerModal from './EditDancerModal';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
@@ -109,7 +111,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               />
               <Button
                 onClick={() => {
-                  setDancerData((prevState: any) => [...prevState, addFormData]);
+                  setDancerData((prevState: any) => [...prevState, { ...addFormData, showEditModal: false }]);
                   setAddFormData(initialFormState);
                 }}
               >
@@ -143,17 +145,28 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
           header={
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               Device ID: {dancer['device_id']}
-              <IconButton
-                icon={<Icon icon="minus" />}
-                onClick={() => {
-                  const tempData = [...dancerData];
-                  tempData.splice(index, 1);
-                  setDancerData(tempData);
-                }}
-              />
+              <ButtonGroup>
+                <IconButton
+                  icon={<Icon icon="minus" />}
+                  onClick={() => {
+                    const tempData = [...dancerData];
+                    tempData.splice(index, 1);
+                    setDancerData(tempData);
+                  }}
+                />
+                <IconButton
+                  icon={<Icon icon="pencil" />}
+                  onClick={() => {
+                    let tempData = [...dancerData];
+                    tempData[index].showEditModal = true;
+                    setDancerData(tempData);
+                  }}
+                />
+              </ButtonGroup>
             </div>
           }
         >
+          <EditDancerModal dancer={dancer} index={index} dancerData={dancerData} setDancerData={setDancerData} />
           <IndividualAnalytics
             predictedData={predictedData.filter((value: any) => value['device_id'] === parseInt(dancer['device_id']))}
             rawData={rawData.filter((value: any) => value['device_id'] === parseInt(dancer['device_id']))}
@@ -181,7 +194,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
           {rawData.length > 0 || predictedData.length > 0 ? (
             <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
           ) : (
-            <LoadingData />
+            <DataLoader />
           )}
         </Panel>
       )}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Loader } from 'rsuite';
-import './LoadingData.css';
+import './DataLoader.css';
 
-const LoadingData: React.FunctionComponent<any> = () => (
+const DataLoader: React.FunctionComponent<any> = () => (
   <div className="loaderContainer">
     <Loader vertical content="Waiting for data..." />
   </div>
 );
 
-export default LoadingData;
+export default DataLoader;
