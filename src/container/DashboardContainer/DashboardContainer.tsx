@@ -3,7 +3,21 @@ import IndividualAnalytics from '../../component/IndividualAnalytics';
 import { useSubscription } from '@apollo/client';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
-import { Button, ButtonToolbar, Col, Icon, IconButton, Input, Panel, PanelGroup, Popover, Row, Whisper } from 'rsuite';
+import {
+  Button,
+  ButtonToolbar,
+  Col,
+  DatePicker,
+  Icon,
+  IconButton,
+  Input,
+  InputGroup,
+  Panel,
+  PanelGroup,
+  Popover,
+  Row,
+  Whisper,
+} from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
 import LoadingData from '../../component/LoadingData';
 import { get } from 'lodash';
@@ -14,11 +28,13 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
   const [dancerData, setDancerData] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>(initialFormState);
-  const [startTime, setStartTime] = useState<string>(new Date().toISOString());
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date | any>(null);
 
   const variables = {
     deviceId: dancerData.map((data: any) => data['device_id']),
-    startTime,
+    startTime: startTime.toISOString(),
+    endTime: endTime?.toISOString(),
   };
 
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
@@ -53,6 +69,23 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const renderAddForm = () => (
     <div className="addFormContainer">
+      <InputGroup style={{ width: 401 }}>
+        <DatePicker
+          format="YYYY-MM-DD HH:mm:ss"
+          value={startTime}
+          onChange={(value) => setStartTime(value)}
+          onClean={() => setStartTime(new Date())}
+          placeholder="Start Time"
+        />
+        <InputGroup.Addon>To</InputGroup.Addon>
+        <DatePicker
+          style={{ width: 180 }}
+          format="YYYY-MM-DD HH:mm:ss"
+          value={endTime}
+          onChange={(value) => setEndTime(value)}
+          placeholder="End Time"
+        />
+      </InputGroup>
       <ButtonToolbar>
         <Whisper
           trigger="click"
@@ -89,7 +122,13 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
             Add Dancer
           </IconButton>
         </Whisper>
-        <IconButton icon={<Icon icon="clock-o" />} onClick={() => setStartTime(new Date().toISOString())}>
+        <IconButton
+          icon={<Icon icon="clock-o" />}
+          onClick={() => {
+            setStartTime(new Date());
+            setEndTime(null);
+          }}
+        >
           Reset Start Time
         </IconButton>
       </ButtonToolbar>
