@@ -45,6 +45,7 @@ export const SelectPickerCell: React.FunctionComponent<any> = ({
   formObject,
   dataKey,
   data,
+  disabledItemValues,
   ...props
 }) => (
   <Cell {...props} style={{ padding: 0 }}>
@@ -54,6 +55,7 @@ export const SelectPickerCell: React.FunctionComponent<any> = ({
         value={formObject[rowData[idKey]] ? formObject[rowData[idKey]][dataKey] : null}
         onChange={(value) => onChange(value, rowData[idKey], dataKey)}
         disabled={!formObject.hasOwnProperty(rowData[idKey])}
+        disabledItemValues={disabledItemValues}
       />
     </div>
   </Cell>

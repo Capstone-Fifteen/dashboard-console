@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { get, isEmpty, isNull } from 'lodash';
+import { get, isEmpty, isNull, forOwn } from 'lodash';
 import { Alert, Button, Input, Panel, Table } from 'rsuite';
 import ALL_DANCER_QUERY from '../../graphql/query/AllDancerQuery';
 import ALL_DEVICE_QUERY from '../../graphql/query/AllDeviceQuery';
@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom';
 import ROUTES from '../../constant/Routes';
 import './SessionNewContainer.css';
 
-// TODO: Currently allows multiple dancer to have the same device ID -- need to handle that exception gracefully
 const SessionNewContainer: React.FunctionComponent<any> = () => {
   const [formObject, setFormObject] = useState<any>({});
   const [sessionName, setSessionName] = useState<string>('');
@@ -99,6 +98,20 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
 
   const deviceOptions = get(deviceData, 'device', []).map((value: any) => ({ label: value.name, value: value.id }));
 
+  console.log(deviceOptions);
+
+  const getSelectedDeviceId = () => {
+    const selectedId: any[] = [];
+
+    forOwn(formObject, (value) => {
+      value['device_id'] && selectedId.push(value['device_id']);
+    });
+
+    return selectedId;
+  };
+
+  console.log(getSelectedDeviceId());
+
   return (
     <Panel header={<h3>New Session</h3>} bordered>
       <Input
@@ -128,6 +141,7 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
             formObject={formObject}
             data={deviceOptions}
             onChange={handleFormValues}
+            disabledItemValues={getSelectedDeviceId()}
           />
         </Column>
         <Column flexGrow={1}>
