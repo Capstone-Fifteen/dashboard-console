@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { ButtonToolbar, Col, Divider, Icon, IconButton, Panel, Row, Timeline } from 'rsuite';
+import { ButtonToolbar, Checkbox, Col, Divider, Icon, IconButton, Panel, Row, Timeline } from 'rsuite';
 import Timer from 'react-compound-timer';
-import danceMoves from '../../constant/DanceMove';
+import { danceMoves as defaultMoves, threeMoves } from '../../constant/DanceMove';
 
 const DataCollectionContainer: React.FunctionComponent<any> = () => {
   const calibrationTime = 10000;
-  const restTime = 5000;
-  const danceTime = 10000;
+  const restTime = 10000;
+  const danceTime = 20000;
 
   const [isInitialized, setIsInitialized] = useState(true);
   const [displayText, setDisplayText] = useState('Calibration');
   const [timerTime, setTimerTime] = useState(calibrationTime);
   const [counter, setCounter] = useState(0);
+  const [useThreeDanceMoves, setUseThreeDanceMoves] = useState(true);
+
+  const danceMoves = useThreeDanceMoves ? threeMoves : defaultMoves;
 
   const renderTimeline = () => {
     return (
@@ -34,7 +37,17 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
   };
 
   return (
-    <Panel header={<h3>Data Collection</h3>} bordered>
+    <Panel
+      header={
+        <div>
+          <h3>Data Collection</h3>
+          <Checkbox checked={useThreeDanceMoves} onChange={(_, checked) => setUseThreeDanceMoves(checked)}>
+            Three Dance Moves
+          </Checkbox>
+        </div>
+      }
+      bordered
+    >
       <Row>
         <Col sm={12}>
           <div key={`${timerTime} ${isInitialized} ${counter}`}>

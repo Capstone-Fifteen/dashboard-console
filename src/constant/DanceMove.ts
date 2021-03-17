@@ -10,4 +10,10 @@ const danceMoves = [
   { move: 'Roll Outwards', description: '' },
 ];
 
-export default danceMoves;
+const threeMoves = [
+  { move: 'Sidepump', description: '' },
+  { move: 'Hair', description: '' },
+  { move: 'Gun', description: '' },
+];
+
+export { threeMoves, danceMoves };

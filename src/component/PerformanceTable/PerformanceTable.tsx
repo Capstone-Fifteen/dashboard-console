@@ -35,7 +35,7 @@ const PerformanceTable: React.FunctionComponent<Props> = ({ data, expectedData, 
             }
           </Cell>
         ) : (
-          <Cell dataKey="dance_move" />
+          <Cell dataKey={dataKey} />
         )}
       </Column>
       {expectedData && (
