@@ -15,14 +15,16 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
   const [useThreeDanceMoves, setUseThreeDanceMoves] = useState(true);
 
   const danceMoves = useThreeDanceMoves ? threeMoves : defaultMoves;
+  const numberOfDanceMoves = useThreeDanceMoves ? 3 : 9;
 
   const renderTimeline = () => {
     return (
       <Timeline>
         {danceMoves.map((item, index) => (
           <Timeline.Item
+            key={item.move}
             dot={
-              counter % 9 > index ? (
+              counter % numberOfDanceMoves > index ? (
                 <Icon icon="check" style={{ background: 'green', borderRadius: '50%' }} />
               ) : (
                 <Icon icon="circle" style={{ borderRadius: '50%' }} />
@@ -65,7 +67,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
               checkpoints={
                 isInitialized
                   ? [
-                      { time: 5000, callback: () => setDisplayText('Get Ready') },
+                      { time: calibrationTime / 2, callback: () => setDisplayText('Get Ready') },
                       {
                         time: 0,
                         callback: () => {
@@ -85,7 +87,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
                       {
                         time: 0,
                         callback: () => {
-                          setDisplayText(danceMoves[(counter + 1) % 9].move);
+                          setDisplayText(danceMoves[(counter + 1) % numberOfDanceMoves].move);
                           setCounter((state) => state + 1);
 
                           setTimerTime(danceTime + restTime);
@@ -115,16 +117,14 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
             </Timer>
           </div>
           <h3 style={{ textAlign: 'center' }}>{displayText}</h3>
-          <h3 style={{ textAlign: 'center', marginTop: 20 }}>Set {Math.floor(counter / 9 + 1)}</h3>
+          <h3 style={{ textAlign: 'center', marginTop: 20 }}>Set {Math.floor(counter / numberOfDanceMoves + 1)}</h3>
         </Col>
         <Col
           sm={12}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          <h4>Current Dance Move:</h4>
-          <h3>{danceMoves[counter % 9].move}</h3>
           <h4>Next Dance Move:</h4>
-          <h3>{danceMoves[(counter + 1) % 9].move}</h3>
+          <h3>{danceMoves[(counter + 1) % numberOfDanceMoves].move}</h3>
           <Divider style={{ width: '80%' }} />
           {renderTimeline()}
         </Col>
