@@ -16,3 +16,8 @@ export const dancerAddModel = Schema.Model({
   name: StringType().isRequired('Required field.'),
   gender: StringType().isRequired('Required field.'),
 });
+
+export const dancerExpectedValuesModel = Schema.Model({
+  expected_values: StringType(),
+  expected_positions: StringType(),
+});

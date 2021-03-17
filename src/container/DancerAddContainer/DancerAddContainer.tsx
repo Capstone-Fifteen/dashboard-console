@@ -17,7 +17,7 @@ import ADD_DANCER_MUTATION from '../../graphql/mutation/AddDancerMutation';
 import ALL_DANCER_QUERY from '../../graphql/query/AllDancerQuery';
 
 const DancerAddContainer: React.FunctionComponent<any> = () => {
-  const initialFormValueState = { name: '', gender: undefined };
+  const initialFormValueState = { name: '', gender: null };
   const [formValue, setFormValue] = useState<any>(initialFormValueState);
   const [addDancer, { error }] = useMutation(ADD_DANCER_MUTATION, {
     variables: {

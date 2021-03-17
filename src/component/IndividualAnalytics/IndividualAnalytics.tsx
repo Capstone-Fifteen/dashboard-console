@@ -3,15 +3,15 @@ import { Divider } from 'rsuite';
 import RawDataLineChart from '../RawDataLineChart';
 import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
+import DataLoader from '../DataLoader';
 import { get } from 'lodash';
-
 import './IndividualAnalytics.css';
 
 interface Props {
   rawData: any[];
   predictedData: any[];
-  expectedDanceData?: string[];
-  expectedPositionData?: number[];
+  expectedDanceData: string[];
+  expectedPositionData: number[];
 }
 
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
@@ -41,10 +41,14 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
     return expectedData[dataLength - 1];
   };
 
+  if (!predictedData.length || !rawData.length) {
+    return <DataLoader />;
+  }
+
   return (
     <>
       <div className="sectionContainer">
-        {expectedDanceData && (
+        {expectedDanceData?.length > 0 && (
           <div className="textContainer">
             <span className="subTitle">Expected Dance Move</span>
             <span className="title">{getCurrentExpectedData(expectedDanceData)}</span>
@@ -54,13 +58,13 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <span className="subTitle">Current Dance Move</span>
           <span className="title">{(currentPredictedData && currentPredictedData['dance_move']) || 'No data'}</span>
         </div>
-        {expectedDanceData && (
+        {expectedDanceData?.length > 0 && (
           <AccuracyPieChart actualData={predictedData} expectedData={expectedDanceData} type="move" />
         )}
       </div>
       <Divider />
       <div className="sectionContainer">
-        {expectedPositionData && (
+        {expectedPositionData?.length > 0 && (
           <div className="textContainer">
             <span className="subTitle">Expected Position</span>
             <span className="title">{getCurrentExpectedData(expectedPositionData)}</span>
@@ -70,7 +74,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <span className="subTitle">Current Position</span>
           <span className="title">{(currentPredictedData && currentPredictedData['dance_position']) || 'No data'}</span>
         </div>
-        {expectedPositionData && (
+        {expectedPositionData?.length > 0 && (
           <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
         )}
       </div>

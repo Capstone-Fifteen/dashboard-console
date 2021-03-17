@@ -9,6 +9,7 @@ const ROUTES = {
   SESSION_ALL: '/session',
   DEVICE_NEW: '/device/new',
   DEVICE_ALL: '/device',
+  DATA_COLLECTION: '/data-collection',
 };
 
 export default ROUTES;

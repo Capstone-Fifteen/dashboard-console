@@ -21,7 +21,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
       return ACCELEROMETER_READING.map((reading, index) => (
         <Line
           key={reading}
-          type="monotone"
+          type="linear"
           isAnimationActive={false}
           dataKey={reading}
           stroke={LINE_COLOR_PALETTE[index]}
