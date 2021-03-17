@@ -12,14 +12,19 @@ import {
   NEW_SESSION_EVENT_KEY,
   ALL_SESSION_EVENT_KEY,
   SESSION_EVENT_KEY,
+  OTHERS_EVENT_KEY,
+  SIGN_OUT_EVENT_KEY,
+  DATA_COLLECTION_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
 import ROUTES from '../../constant/Routes';
-
+import { useAppDispatch } from '../../redux/hook';
+import { clearSession } from '../../redux/reducer/authenticatedSlice';
 import './SideNavContainer.css';
 
 const SideNavContainer: React.FunctionComponent<any> = () => {
   const [expand, setExpand] = useState(true);
   const [selectedPanel, setSelectedPanel] = useState('dashboard');
+  const dispatch = useAppDispatch();
 
   const toggleExpand = () => setExpand(!expand);
   const checkActive = (eventKey: string) => selectedPanel === eventKey;
@@ -115,6 +120,29 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                   to={ROUTES.SESSION_ALL}
                 >
                   All Sessions
+                </Dropdown.Item>
+              </Dropdown>
+              <Dropdown
+                eventKey={OTHERS_EVENT_KEY}
+                title="Setting"
+                icon={<Icon icon="cog" />}
+                placement="rightStart"
+                trigger="hover"
+              >
+                <Dropdown.Item
+                  eventKey={DATA_COLLECTION_EVENT_KEY}
+                  active={checkActive(DATA_COLLECTION_EVENT_KEY)}
+                  componentClass={Link}
+                  to={ROUTES.DATA_COLLECTION}
+                >
+                  Data Collection
+                </Dropdown.Item>
+                <Dropdown.Item
+                  eventKey={SIGN_OUT_EVENT_KEY}
+                  active={checkActive(SIGN_OUT_EVENT_KEY)}
+                  onSelect={() => dispatch(clearSession())}
+                >
+                  Sign Out
                 </Dropdown.Item>
               </Dropdown>
             </Nav>
