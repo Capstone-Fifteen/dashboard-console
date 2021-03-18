@@ -124,7 +124,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <h4>Next Dance Move:</h4>
-          <h3>{danceMoves[(counter + 1) % numberOfDanceMoves].move}</h3>
+          <h3>{isInitialized ? danceMoves[0].move : danceMoves[(counter + 1) % numberOfDanceMoves].move}</h3>
           <Divider style={{ width: '80%' }} />
           {renderTimeline()}
         </Col>
