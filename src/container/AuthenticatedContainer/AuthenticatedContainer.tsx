@@ -13,6 +13,7 @@ import DancerProfileContainer from '../DancerProfileContainer';
 import SessionListContainer from '../SessionListContainer';
 import SessionViewContainer from '../SessionViewContainer';
 import DataCollectionContainer from '../DataCollectionContainer';
+import DataVisualizationContainer from '../DataVisualizationContainer';
 import './AuthenticatedContainer.css';
 
 const AuthenticatedContainer = () => {
@@ -51,6 +52,9 @@ const AuthenticatedContainer = () => {
             </Route>
             <Route path={ROUTES.DATA_COLLECTION}>
               <DataCollectionContainer />
+            </Route>
+            <Route path={ROUTES.DATA_VISUALIZATION}>
+              <DataVisualizationContainer />
             </Route>
             <Route path={ROUTES.ROOT}>
               <SessionListContainer />

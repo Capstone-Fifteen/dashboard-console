@@ -10,6 +10,7 @@ const ROUTES = {
   DEVICE_NEW: '/device/new',
   DEVICE_ALL: '/device',
   DATA_COLLECTION: '/data-collection',
+  DATA_VISUALIZATION: '/data-visualization',
 };
 
 export default ROUTES;
