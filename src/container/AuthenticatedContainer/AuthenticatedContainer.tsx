@@ -12,8 +12,8 @@ import SessionNewContainer from '../SessionNewContainer';
 import DancerProfileContainer from '../DancerProfileContainer';
 import SessionListContainer from '../SessionListContainer';
 import SessionViewContainer from '../SessionViewContainer';
-import './AuthenticatedContainer.css';
 import DataCollectionContainer from '../DataCollectionContainer';
+import './AuthenticatedContainer.css';
 
 const AuthenticatedContainer = () => {
   return (
