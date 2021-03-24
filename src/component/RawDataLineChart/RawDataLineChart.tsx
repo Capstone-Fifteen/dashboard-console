@@ -1,5 +1,5 @@
 import React from 'react';
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Brush, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
 import { epochTimeFormatter } from '../../utils/numeric';
 
@@ -60,6 +60,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
           domain={['auto', 'auto']}
           name="Time"
         />
+        <Brush dataKey="time" height={10} stroke="#8884d8" />
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
