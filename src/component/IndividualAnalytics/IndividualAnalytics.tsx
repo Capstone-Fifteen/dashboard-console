@@ -41,7 +41,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
     return expectedData[dataLength - 1];
   };
 
-  if (!predictedData.length || !rawData.length) {
+  if (!predictedData.length && !rawData.length) {
     return <DataLoader />;
   }
 

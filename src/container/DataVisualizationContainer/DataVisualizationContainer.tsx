@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import CSVReader from 'react-csv-reader';
+import './DataVisualizationContainer.css';
+import { Panel } from 'rsuite';
 
 const DataVisualizationContainer = () => {
   const [graphData, setGraphData] = useState<any>(null);
-  console.log(graphData);
 
   return (
-    <div>
+    <Panel header={<h3>Data Visualization</h3>} bordered>
       <CSVReader
         onFileLoaded={(data) => {
           const xAxisData: number[] = [];
@@ -57,7 +58,7 @@ const DataVisualizationContainer = () => {
         }}
       />
       {graphData && <ReactECharts style={{ height: 800 }} option={graphData} />}
-    </div>
+    </Panel>
   );
 };
 
