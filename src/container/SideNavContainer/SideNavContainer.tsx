@@ -16,6 +16,7 @@ import {
   SIGN_OUT_EVENT_KEY,
   DATA_COLLECTION_EVENT_KEY,
   DATA_VISUALIZATION_EVENT_KEY,
+  DATA_TOOL_EVENT_KEY,
 } from '../../constant/SideNavEventKey';
 import ROUTES from '../../constant/Routes';
 import { useAppDispatch } from '../../redux/hook';
@@ -124,9 +125,9 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                 </Dropdown.Item>
               </Dropdown>
               <Dropdown
-                eventKey={OTHERS_EVENT_KEY}
-                title="Setting"
-                icon={<Icon icon="cog" />}
+                eventKey={DATA_TOOL_EVENT_KEY}
+                title="Data Tool"
+                icon={<Icon icon="dashboard" />}
                 placement="rightStart"
                 trigger="hover"
               >
@@ -146,6 +147,14 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                 >
                   Data Visualization
                 </Dropdown.Item>
+              </Dropdown>
+              <Dropdown
+                eventKey={OTHERS_EVENT_KEY}
+                title="Setting"
+                icon={<Icon icon="cog" />}
+                placement="rightStart"
+                trigger="hover"
+              >
                 <Dropdown.Item
                   eventKey={SIGN_OUT_EVENT_KEY}
                   active={checkActive(SIGN_OUT_EVENT_KEY)}

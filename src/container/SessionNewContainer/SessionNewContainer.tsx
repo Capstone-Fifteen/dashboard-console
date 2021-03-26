@@ -98,8 +98,6 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
 
   const deviceOptions = get(deviceData, 'device', []).map((value: any) => ({ label: value.name, value: value.id }));
 
-  console.log(deviceOptions);
-
   const getSelectedDeviceId = () => {
     const selectedId: any[] = [];
 
@@ -109,8 +107,6 @@ const SessionNewContainer: React.FunctionComponent<any> = () => {
 
     return selectedId;
   };
-
-  console.log(getSelectedDeviceId());
 
   return (
     <Panel header={<h3>New Session</h3>} bordered>
