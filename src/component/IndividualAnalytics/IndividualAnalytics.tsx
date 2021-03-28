@@ -1,6 +1,6 @@
-import React from 'react';
-import { Divider } from 'rsuite';
-import RawDataLineChart from '../RawDataLineChart';
+import React, { useState } from 'react';
+import { Animation, Divider, Icon, IconButton } from 'rsuite';
+import SensorDataLIneChart from '../SensorDataLineChart';
 import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
 import DataLoader from '../DataLoader';
@@ -21,6 +21,8 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   expectedPositionData,
 }) => {
   const currentPredictedData = predictedData && predictedData[0];
+
+  const [showSensorReading, setShowSensorReading] = useState(false);
 
   const getDelayType = (delay: number) => {
     if (!delay) {
@@ -90,30 +92,44 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Moves</span>
-          <PerformanceTable data={predictedData} expectedData={expectedDanceData} type="move" />
         </div>
+        <PerformanceTable data={predictedData} expectedData={expectedDanceData} type="move" />
       </div>
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Positions</span>
-          <PerformanceTable data={predictedData} expectedData={expectedPositionData} type="position" />
         </div>
+        <PerformanceTable data={predictedData} expectedData={expectedPositionData} type="position" />
       </div>
       <Divider />
-      <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Accelerometer Reading</span>
-          <RawDataLineChart data={rawData} type="accelerometer" />
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <IconButton
+          icon={<Icon icon={showSensorReading ? 'arrow-up' : 'arrow-down'} />}
+          onClick={() => setShowSensorReading(!showSensorReading)}
+          appearance="subtle"
+          size="xs"
+        >
+          {showSensorReading ? 'Hide' : 'Show'} Sensor Readings
+        </IconButton>
       </div>
-      <Divider />
-      <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Gyroscope Reading</span>
-          <RawDataLineChart data={rawData} type="gyroscope" />
+      <Animation.Collapse in={showSensorReading}>
+        <div>
+          <div className="sectionContainer">
+            <div className="textContainer">
+              <span className="subTitle">Accelerometer Reading</span>
+            </div>
+            <SensorDataLIneChart data={rawData} type="accelerometer" />
+          </div>
+          <Divider />
+          <div className="sectionContainer">
+            <div className="textContainer">
+              <span className="subTitle">Gyroscope Reading</span>
+            </div>
+            <SensorDataLIneChart data={rawData} type="gyroscope" />
+          </div>
         </div>
-      </div>
+      </Animation.Collapse>
     </>
   );
 };

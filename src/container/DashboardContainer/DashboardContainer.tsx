@@ -71,21 +71,33 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const renderAddForm = () => (
     <div className="addFormContainer">
-      <InputGroup style={{ width: 401 }}>
+      <InputGroup style={{ width: 406 }}>
         <DatePicker
           format="YYYY-MM-DD HH:mm:ss"
           value={startTime}
           onChange={(value) => setStartTime(value)}
           onClean={() => setStartTime(new Date())}
           placeholder="Start Time"
+          ranges={[
+            {
+              label: 'Now',
+              value: new Date(),
+            },
+          ]}
         />
         <InputGroup.Addon>To</InputGroup.Addon>
         <DatePicker
-          style={{ width: 180 }}
+          style={{ minWidth: 183 }}
           format="YYYY-MM-DD HH:mm:ss"
           value={endTime}
           onChange={(value) => setEndTime(value)}
           placeholder="End Time"
+          ranges={[
+            {
+              label: 'Now',
+              value: new Date(),
+            },
+          ]}
         />
       </InputGroup>
       <ButtonToolbar>

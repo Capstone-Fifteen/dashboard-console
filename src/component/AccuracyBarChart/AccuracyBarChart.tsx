@@ -11,17 +11,8 @@ interface Props {
 
 const AccuracyBarChart: React.FunctionComponent<Props> = ({ data, percentage }) => {
   return (
-    <ResponsiveContainer width={500} height={300}>
-      <BarChart
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-        layout="vertical"
-      >
+    <ResponsiveContainer width="80%" height={400}>
+      <BarChart data={data} layout="vertical">
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"

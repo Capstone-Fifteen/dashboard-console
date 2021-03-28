@@ -10,16 +10,8 @@ interface Props {
 
 const EnergyBarChart: React.FunctionComponent<Props> = ({ data, dataKey, name }) => {
   return (
-    <ResponsiveContainer width={500} height={300}>
-      <BarChart
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+    <ResponsiveContainer width="80%" height={400}>
+      <BarChart data={data}>
         <CartesianGrid />
         <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
         <YAxis />

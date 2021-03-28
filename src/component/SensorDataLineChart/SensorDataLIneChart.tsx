@@ -8,7 +8,7 @@ interface Props {
   type: 'accelerometer' | 'gyroscope';
 }
 
-const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
+const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => {
   const graphData =
     data &&
     data.map((value) => ({
@@ -42,16 +42,8 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   };
 
   return (
-    <ResponsiveContainer width={500} height={300}>
-      <LineChart
-        data={graphData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+    <ResponsiveContainer width="80%" height={400}>
+      <LineChart data={graphData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
@@ -60,7 +52,7 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
           domain={['auto', 'auto']}
           name="Time"
         />
-        <Brush dataKey="time" height={10} stroke="#8884d8" />
+        <Brush dataKey="time" height={20} stroke="#8884d8" />
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
@@ -70,4 +62,4 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   );
 };
 
-export default RawDataLineChart;
+export default SensorDataLIneChart;
