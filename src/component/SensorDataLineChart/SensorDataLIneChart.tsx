@@ -16,6 +16,8 @@ const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => 
       timestamp: new Date(value['created_at']).getTime(), // convert timestamp to epoch time for chart support
     }));
 
+  const brushStartIndex = data.length - 300 > 0 ? data.length - 300 : 0;
+
   const extractLineData = () => {
     if (type === 'accelerometer') {
       return ACCELEROMETER_READING.map((reading, index) => (
@@ -52,7 +54,7 @@ const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => 
           domain={['auto', 'auto']}
           name="Time"
         />
-        <Brush dataKey="time" height={20} stroke="#8884d8" />
+        <Brush dataKey="time" height={20} stroke="#8884d8" startIndex={brushStartIndex} />
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
