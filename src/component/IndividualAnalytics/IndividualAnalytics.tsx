@@ -12,6 +12,7 @@ interface Props {
   predictedData: any[];
   expectedDanceData: string[];
   expectedPositionData: number[];
+  showBrush?: boolean;
 }
 
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
@@ -19,6 +20,7 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   predictedData,
   expectedDanceData,
   expectedPositionData,
+  showBrush,
 }) => {
   const currentPredictedData = predictedData && predictedData[0];
 
@@ -119,14 +121,14 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
             <div className="textContainer">
               <span className="subTitle">Accelerometer Reading</span>
             </div>
-            <SensorDataLineChart data={rawData} type="accelerometer" />
+            <SensorDataLineChart data={rawData} type="accelerometer" showBrush={showBrush} />
           </div>
           <Divider />
           <div className="sectionContainer">
             <div className="textContainer">
               <span className="subTitle">Gyroscope Reading</span>
             </div>
-            <SensorDataLineChart data={rawData} type="gyroscope" />
+            <SensorDataLineChart data={rawData} type="gyroscope" showBrush={showBrush} />
           </div>
         </div>
       </Animation.Collapse>

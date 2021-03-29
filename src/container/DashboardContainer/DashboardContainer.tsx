@@ -40,8 +40,14 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
     endTime: endTime?.toISOString(),
   };
 
+  const streamingVariables = {
+    ...variables,
+    order: 'desc',
+    limit: 600,
+  };
+
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? { ...variables, order: 'asc' } : { ...streamingVariables },
     skip: !dancerData.length,
   });
   const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
@@ -196,6 +202,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               dancer['expected_positions'].length > 0 &&
               dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
             }
+            showBrush={!!endTime}
           />
         </Panel>
       </Col>
