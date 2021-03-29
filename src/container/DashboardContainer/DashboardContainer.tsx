@@ -3,6 +3,7 @@ import IndividualAnalytics from '../../component/IndividualAnalytics';
 import { useSubscription } from '@apollo/client';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
+import LAST_POSITION_SUBSCRIPTION from '../../graphql/subscription/LastPositionSubscription';
 import {
   Button,
   ButtonGroup,
@@ -21,10 +22,10 @@ import {
 } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
 import DataLoader from '../../component/DataLoader';
+import EditDancerModal from './EditDancerModal';
 import { get } from 'lodash';
 import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import './DashboardContainer.css';
-import EditDancerModal from './EditDancerModal';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
@@ -48,8 +49,14 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
     skip: !dancerData.length,
   });
 
+  const { data: lastPositionSubscription } = useSubscription(LAST_POSITION_SUBSCRIPTION, {
+    variables,
+    skip: !dancerData.length,
+  });
+
   const rawData = get(rawDataSubscription, 'raw_data', []);
   const predictedData = get(predictedDataSubscription, 'predicted_data', []);
+  const lastPositionData = get(lastPositionSubscription, 'predicted_data', []);
 
   const handleFormChange = (value: string, dataKey: string) => {
     setAddFormData((prevState: any) => ({
@@ -204,7 +211,12 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
       {dancerData.length > 0 && (
         <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
           {rawData.length > 0 || predictedData.length > 0 ? (
-            <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
+            <TeamAnalytics
+              delayData={delayData}
+              emgData={emgData}
+              accuracyData={accuracyData}
+              lastPositionData={lastPositionData}
+            />
           ) : (
             <DataLoader />
           )}

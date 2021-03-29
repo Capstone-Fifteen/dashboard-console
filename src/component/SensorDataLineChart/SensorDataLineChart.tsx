@@ -8,7 +8,7 @@ interface Props {
   type: 'accelerometer' | 'gyroscope';
 }
 
-const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => {
+const SensorDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   const graphData =
     data &&
     data.map((value) => ({
@@ -16,7 +16,8 @@ const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => 
       timestamp: new Date(value['created_at']).getTime(), // convert timestamp to epoch time for chart support
     }));
 
-  const brushStartIndex = data.length - 300 > 0 ? data.length - 300 : 0;
+  // TODO: Brush is behaving counter-intuitively
+  const brushEndIndex = data.length - 300 > 0 ? 300 : 0;
 
   const extractLineData = () => {
     if (type === 'accelerometer') {
@@ -49,12 +50,19 @@ const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => 
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
+          scale="time"
           dataKey="timestamp"
           tickFormatter={epochTimeFormatter}
           domain={['auto', 'auto']}
           name="Time"
         />
-        <Brush dataKey="time" height={20} stroke="#8884d8" startIndex={brushStartIndex} />
+        <Brush
+          data={graphData}
+          dataKey="timestamp"
+          tickFormatter={epochTimeFormatter}
+          endIndex={brushEndIndex}
+          height={20}
+        />
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
@@ -64,4 +72,4 @@ const SensorDataLIneChart: React.FunctionComponent<Props> = ({ data, type }) => 
   );
 };
 
-export default SensorDataLIneChart;
+export default SensorDataLineChart;

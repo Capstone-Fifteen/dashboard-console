@@ -1,2 +1,2 @@
-import SensorDataLIneChart from './SensorDataLIneChart';
-export default SensorDataLIneChart;
+import SensorDataLineChart from './SensorDataLineChart';
+export default SensorDataLineChart;

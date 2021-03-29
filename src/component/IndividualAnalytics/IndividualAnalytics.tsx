@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Animation, Divider, Icon, IconButton } from 'rsuite';
-import SensorDataLIneChart from '../SensorDataLineChart';
+import SensorDataLineChart from '../SensorDataLineChart';
 import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
 import DataLoader from '../DataLoader';
@@ -119,14 +119,14 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
             <div className="textContainer">
               <span className="subTitle">Accelerometer Reading</span>
             </div>
-            <SensorDataLIneChart data={rawData} type="accelerometer" />
+            <SensorDataLineChart data={rawData} type="accelerometer" />
           </div>
           <Divider />
           <div className="sectionContainer">
             <div className="textContainer">
               <span className="subTitle">Gyroscope Reading</span>
             </div>
-            <SensorDataLIneChart data={rawData} type="gyroscope" />
+            <SensorDataLineChart data={rawData} type="gyroscope" />
           </div>
         </div>
       </Animation.Collapse>
