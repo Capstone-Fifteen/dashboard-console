@@ -139,6 +139,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
                   setDancerData((prevState: any) => [...prevState, { ...addFormData, showEditModal: false }]);
                   setAddFormData(initialFormState);
                 }}
+                disabled={!addFormData?.device_id.length}
               >
                 Add
               </Button>
@@ -211,10 +212,6 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   return (
     <PanelGroup accordion bordered>
-      <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
-        {renderAddForm()}
-        <Row>{renderIndividualAnalytics()}</Row>
-      </Panel>
       {dancerData.length > 0 && (
         <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
           {rawData.length > 0 || predictedData.length > 0 ? (
@@ -229,6 +226,10 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
           )}
         </Panel>
       )}
+      <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
+        {renderAddForm()}
+        <Row>{renderIndividualAnalytics()}</Row>
+      </Panel>
     </PanelGroup>
   );
 };

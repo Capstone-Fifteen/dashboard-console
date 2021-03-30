@@ -50,21 +50,23 @@ const SensorDataLineChart: React.FunctionComponent<Props> = ({ data, type, showB
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
-          scale="time"
           dataKey="timestamp"
           tickFormatter={epochTimeFormatter}
           domain={['auto', 'auto']}
           name="Time"
-          angle={-45}
-          textAnchor="end"
-          height={60}
         />
         {showBrush && (
-          <Brush dataKey="timestamp" tickFormatter={epochTimeFormatter} startIndex={brushStartIndex} height={20} />
+          <Brush
+            dataKey="timestamp"
+            tickFormatter={epochTimeFormatter}
+            startIndex={brushStartIndex}
+            height={20}
+            style={{ position: 'relative' }}
+          />
         )}
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
-        <Legend wrapperStyle={{ position: 'relative' }} />
+        <Legend />
         {extractLineData()}
       </LineChart>
     </ResponsiveContainer>
