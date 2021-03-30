@@ -14,7 +14,7 @@ import { LINE_COLOR_PALETTE } from '../../constant/LineChart';
 
 const AccuracyLineChart: React.FunctionComponent<any> = ({ threshold, data, dataKey, domain, name, percentage }) => {
   return (
-    <ResponsiveContainer width={500} height={300}>
+    <ResponsiveContainer width="80%" height={400}>
       <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" type="category" />

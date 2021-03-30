@@ -160,7 +160,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
           </div>
         }
       />
-      <Panel header={<h4>Individual Analytics</h4>} collapsible defaultExpanded>
+      <Panel style={{ marginBottom: 20 }} header={<h4>Individual Analytics</h4>} collapsible defaultExpanded>
         {renderIndividualAnalytics()}
       </Panel>
       <Panel header={<h4>Team Analytics</h4>} collapsible defaultExpanded>

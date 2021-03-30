@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pie, PieChart } from 'recharts';
+import { Pie, PieChart, ResponsiveContainer } from 'recharts';
 import ActiveShape from './ActiveShape';
 
 interface Props {
@@ -40,19 +40,21 @@ const AccuracyPieChart: React.FunctionComponent<Props> = ({ actualData, expected
   const data = calculateAccuracy();
 
   return (
-    <PieChart width={400} height={300}>
-      <Pie
-        activeIndex={activeIndex}
-        activeShape={ActiveShape}
-        data={data}
-        cx="50%"
-        cy="50%"
-        innerRadius={60}
-        outerRadius={80}
-        dataKey="value"
-        onMouseEnter={onMouseEnter}
-      />
-    </PieChart>
+    <ResponsiveContainer width="100%" height={300}>
+      <PieChart>
+        <Pie
+          activeIndex={activeIndex}
+          activeShape={ActiveShape}
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={40}
+          outerRadius={60}
+          dataKey="value"
+          onMouseEnter={onMouseEnter}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 };
 

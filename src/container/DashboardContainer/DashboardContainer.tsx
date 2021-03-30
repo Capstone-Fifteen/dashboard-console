@@ -3,6 +3,7 @@ import IndividualAnalytics from '../../component/IndividualAnalytics';
 import { useSubscription } from '@apollo/client';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
+import LAST_POSITION_SUBSCRIPTION from '../../graphql/subscription/LastPositionSubscription';
 import {
   Button,
   ButtonGroup,
@@ -21,10 +22,10 @@ import {
 } from 'rsuite';
 import TeamAnalytics from '../../component/TeamAnalytics';
 import DataLoader from '../../component/DataLoader';
+import EditDancerModal from './EditDancerModal';
 import { get } from 'lodash';
 import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
 import './DashboardContainer.css';
-import EditDancerModal from './EditDancerModal';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
   const initialFormState = { expected_moves: '', expected_positions: '', device_id: '' };
@@ -39,8 +40,14 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
     endTime: endTime?.toISOString(),
   };
 
+  const streamingVariables = {
+    ...variables,
+    order: 'desc',
+    limit: 600,
+  };
+
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? { ...variables, order: 'asc' } : { ...streamingVariables },
     skip: !dancerData.length,
   });
   const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
@@ -48,8 +55,14 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
     skip: !dancerData.length,
   });
 
+  const { data: lastPositionSubscription } = useSubscription(LAST_POSITION_SUBSCRIPTION, {
+    variables,
+    skip: !dancerData.length,
+  });
+
   const rawData = get(rawDataSubscription, 'raw_data', []);
   const predictedData = get(predictedDataSubscription, 'predicted_data', []);
+  const lastPositionData = get(lastPositionSubscription, 'predicted_data', []);
 
   const handleFormChange = (value: string, dataKey: string) => {
     setAddFormData((prevState: any) => ({
@@ -71,21 +84,33 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const renderAddForm = () => (
     <div className="addFormContainer">
-      <InputGroup style={{ width: 401 }}>
+      <InputGroup style={{ width: 406 }}>
         <DatePicker
           format="YYYY-MM-DD HH:mm:ss"
           value={startTime}
           onChange={(value) => setStartTime(value)}
           onClean={() => setStartTime(new Date())}
           placeholder="Start Time"
+          ranges={[
+            {
+              label: 'Now',
+              value: new Date(),
+            },
+          ]}
         />
         <InputGroup.Addon>To</InputGroup.Addon>
         <DatePicker
-          style={{ width: 180 }}
+          style={{ minWidth: 183 }}
           format="YYYY-MM-DD HH:mm:ss"
           value={endTime}
           onChange={(value) => setEndTime(value)}
           placeholder="End Time"
+          ranges={[
+            {
+              label: 'Now',
+              value: new Date(),
+            },
+          ]}
         />
       </InputGroup>
       <ButtonToolbar>
@@ -114,6 +139,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
                   setDancerData((prevState: any) => [...prevState, { ...addFormData, showEditModal: false }]);
                   setAddFormData(initialFormState);
                 }}
+                disabled={!addFormData?.device_id.length}
               >
                 Add
               </Button>
@@ -177,6 +203,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               dancer['expected_positions'].length > 0 &&
               dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
             }
+            showBrush={!!endTime}
           />
         </Panel>
       </Col>
@@ -185,19 +212,24 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   return (
     <PanelGroup accordion bordered>
-      <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
-        {renderAddForm()}
-        <Row>{renderIndividualAnalytics()}</Row>
-      </Panel>
       {dancerData.length > 0 && (
         <Panel header={<h4>Team Analytics</h4>} defaultExpanded>
           {rawData.length > 0 || predictedData.length > 0 ? (
-            <TeamAnalytics delayData={delayData} emgData={emgData} accuracyData={accuracyData} />
+            <TeamAnalytics
+              delayData={delayData}
+              emgData={emgData}
+              accuracyData={accuracyData}
+              lastPositionData={lastPositionData}
+            />
           ) : (
             <DataLoader />
           )}
         </Panel>
       )}
+      <Panel header={<h4>Individual Analytics</h4>} defaultExpanded>
+        {renderAddForm()}
+        <Row>{renderIndividualAnalytics()}</Row>
+      </Panel>
     </PanelGroup>
   );
 };

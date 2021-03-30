@@ -1,6 +1,6 @@
-import React from 'react';
-import { Divider } from 'rsuite';
-import RawDataLineChart from '../RawDataLineChart';
+import React, { useState } from 'react';
+import { Animation, Divider, Icon, IconButton } from 'rsuite';
+import SensorDataLineChart from '../SensorDataLineChart';
 import PerformanceTable from '../PerformanceTable';
 import AccuracyPieChart from '../AccuracyPieChart';
 import DataLoader from '../DataLoader';
@@ -12,6 +12,7 @@ interface Props {
   predictedData: any[];
   expectedDanceData: string[];
   expectedPositionData: number[];
+  showBrush?: boolean;
 }
 
 const IndividualAnalytics: React.FunctionComponent<Props> = ({
@@ -19,8 +20,11 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
   predictedData,
   expectedDanceData,
   expectedPositionData,
+  showBrush,
 }) => {
   const currentPredictedData = predictedData && predictedData[0];
+
+  const [showSensorReading, setShowSensorReading] = useState(false);
 
   const getDelayType = (delay: number) => {
     if (!delay) {
@@ -78,42 +82,56 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
         )}
       </div>
-      <Divider />
-      <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Rhythmic Performance</span>
-          <span className="title">{getDelayType(get(currentPredictedData, 'delay', null))}</span>
-          <span className="subTitle">{get(currentPredictedData, 'delay', null) || 'No data'}</span>
-        </div>
-      </div>
+      {/*<Divider />*/}
+      {/*<div className="sectionContainer">*/}
+      {/*  <div className="textContainer">*/}
+      {/*    <span className="subTitle">Rhythmic Performance</span>*/}
+      {/*    <span className="title">{getDelayType(get(currentPredictedData, 'delay', null))}</span>*/}
+      {/*    <span className="subTitle">{get(currentPredictedData, 'delay', null) || 'No data'}</span>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Moves</span>
-          <PerformanceTable data={predictedData} expectedData={expectedDanceData} type="move" />
         </div>
+        <PerformanceTable data={predictedData} expectedData={expectedDanceData} type="move" />
       </div>
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
           <span className="subTitle">Executed Dance Positions</span>
-          <PerformanceTable data={predictedData} expectedData={expectedPositionData} type="position" />
         </div>
+        <PerformanceTable data={predictedData} expectedData={expectedPositionData} type="position" />
       </div>
       <Divider />
-      <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Accelerometer Reading</span>
-          <RawDataLineChart data={rawData} type="accelerometer" />
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <IconButton
+          icon={<Icon icon={showSensorReading ? 'arrow-up' : 'arrow-down'} />}
+          onClick={() => setShowSensorReading(!showSensorReading)}
+          appearance="subtle"
+          size="xs"
+        >
+          {showSensorReading ? 'Hide' : 'Show'} Sensor Readings
+        </IconButton>
       </div>
-      <Divider />
-      <div className="sectionContainer">
-        <div className="textContainer">
-          <span className="subTitle">Gyroscope Reading</span>
-          <RawDataLineChart data={rawData} type="gyroscope" />
+      <Animation.Collapse in={showSensorReading}>
+        <div>
+          <div className="sectionContainer">
+            <div className="textContainer">
+              <span className="subTitle">Accelerometer Reading</span>
+            </div>
+            <SensorDataLineChart data={rawData} type="accelerometer" showBrush={showBrush} />
+          </div>
+          <Divider />
+          <div className="sectionContainer">
+            <div className="textContainer">
+              <span className="subTitle">Gyroscope Reading</span>
+            </div>
+            <SensorDataLineChart data={rawData} type="gyroscope" showBrush={showBrush} />
+          </div>
         </div>
-      </div>
+      </Animation.Collapse>
     </>
   );
 };

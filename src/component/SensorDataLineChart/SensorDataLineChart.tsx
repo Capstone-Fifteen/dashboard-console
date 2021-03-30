@@ -6,15 +6,18 @@ import { epochTimeFormatter } from '../../utils/numeric';
 interface Props {
   data: any[];
   type: 'accelerometer' | 'gyroscope';
+  showBrush?: boolean;
 }
 
-const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
+const SensorDataLineChart: React.FunctionComponent<Props> = ({ data, type, showBrush }) => {
   const graphData =
     data &&
     data.map((value) => ({
       ...value,
       timestamp: new Date(value['created_at']).getTime(), // convert timestamp to epoch time for chart support
     }));
+
+  const brushStartIndex = data.length - 300 > 0 ? data.length - 300 : 0;
 
   const extractLineData = () => {
     if (type === 'accelerometer') {
@@ -42,16 +45,8 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   };
 
   return (
-    <ResponsiveContainer width={500} height={300}>
-      <LineChart
-        data={graphData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+    <ResponsiveContainer width="80%" height={400}>
+      <LineChart data={graphData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
@@ -60,7 +55,15 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
           domain={['auto', 'auto']}
           name="Time"
         />
-        <Brush dataKey="time" height={10} stroke="#8884d8" />
+        {showBrush && (
+          <Brush
+            dataKey="timestamp"
+            tickFormatter={epochTimeFormatter}
+            startIndex={brushStartIndex}
+            height={20}
+            style={{ position: 'relative' }}
+          />
+        )}
         <YAxis />
         <Tooltip labelFormatter={epochTimeFormatter} labelStyle={{ color: 'black' }} />
         <Legend />
@@ -70,4 +73,4 @@ const RawDataLineChart: React.FunctionComponent<Props> = ({ data, type }) => {
   );
 };
 
-export default RawDataLineChart;
+export default SensorDataLineChart;
