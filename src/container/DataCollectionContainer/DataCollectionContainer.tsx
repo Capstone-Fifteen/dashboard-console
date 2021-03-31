@@ -36,7 +36,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
   const updateTimeData = (positionNumber: number, type: string) => {
     const temp = timeData;
     const danceMove = danceMoves[positionNumber % numberOfDanceMoves].move;
-    const danceRound = Math.floor(counter / numberOfDanceMoves + 1);
+    const danceRound = Math.floor(positionNumber / numberOfDanceMoves + 1);
 
     if (type === 'start') {
       set(temp, `${danceMove}_${danceRound}.start`, new Date().getTime());
@@ -85,7 +85,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
       header={
         <div>
           <h3>Data Collection</h3>
-          <Checkbox checked={useThreeDanceMoves} onChange={(_, checked) => setUseThreeDanceMoves(checked)}>
+          <Checkbox disabled checked={useThreeDanceMoves} onChange={(_, checked) => setUseThreeDanceMoves(checked)}>
             Three Dance Moves
           </Checkbox>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -143,9 +143,9 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
                         time: 0,
                         callback: () => {
                           setIsInitialized(false);
+                          updateTimeData(counter, 'start');
                           setDisplayText(danceMoves[counter].move);
                           setTimerTime(danceTime + restTime);
-                          updateTimeData(counter, 'start');
                         },
                       },
                     ]
@@ -207,7 +207,9 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
           {renderTimeline()}
         </Col>
       </Row>
-      <CSVLink data={convertToCsv()}>Download CSV</CSVLink>
+      <CSVLink data={convertToCsv()} filename={new Date().getTime().toString()} enclosingCharacter={'`'}>
+        Download CSV
+      </CSVLink>
     </Panel>
   );
 };
