@@ -29,6 +29,7 @@ jobs:
           REACT_APP_GRAPHQL_HTTP_ENDPOINT: ${{ secrets.GRAPHQL_HTTP_ENDPOINT }}
           REACT_APP_GRAPHQL_WS_ENDPOINT: ${{ secrets.GRAPHQL_WS_ENDPOINT }}
           REACT_APP_GRAPHQL_SECRET: ${{ secrets.GRAPHQL_SECRET }}
+          CI: false
 
       - name: Deploy
         id: deploy
