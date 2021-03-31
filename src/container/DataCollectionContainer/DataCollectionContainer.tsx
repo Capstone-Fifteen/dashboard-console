@@ -24,10 +24,10 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
   const [displayText, setDisplayText] = useState('Calibration');
   const [timerTime, setTimerTime] = useState(calibrationTime);
   const [counter, setCounter] = useState(0);
-  const [useThreeDanceMoves, setUseThreeDanceMoves] = useState(true);
-  const [rounds, setRounds] = useState(1);
-  const [danceTime, setDanceTime] = useState(10000);
-  const [restTime, setRestTime] = useState(5000);
+  const [useThreeDanceMoves, setUseThreeDanceMoves] = useState(false);
+  const [rounds, setRounds] = useState(3);
+  const [danceTime, setDanceTime] = useState(20000);
+  const [restTime, setRestTime] = useState(10000);
   const [timeData, setTimeData] = useState<any>({});
 
   const danceMoves = useThreeDanceMoves ? threeMoves : defaultMoves;
