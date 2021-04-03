@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import ReactECharts from 'echarts-for-react';
 import CSVReader from 'react-csv-reader';
 import './DataVisualizationContainer.css';
 import { Panel } from 'rsuite';
+import { Brush, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { ACCELEROMETER_READING, GYROSCOPE_READING, LINE_COLOR_PALETTE } from '../../constant/LineChart';
 
 const DataVisualizationContainer = () => {
   const [graphData, setGraphData] = useState<any>(null);
@@ -11,13 +12,7 @@ const DataVisualizationContainer = () => {
     <Panel header={<h3>Data Visualization</h3>} bordered>
       <CSVReader
         onFileLoaded={(data) => {
-          const xAxisData: number[] = [];
-          const xReading: any[] = [];
-          const yReading: any[] = [];
-          const zReading: any[] = [];
-          const yawReading: any[] = [];
-          const pitchReading: any[] = [];
-          const rollReading: any[] = [];
+          const consolidatedData: any[] = [];
 
           data.forEach((item, index) => {
             const x_reading = parseInt(item[0]);
@@ -26,38 +21,42 @@ const DataVisualizationContainer = () => {
             const yaw_reading = parseInt(item[3]);
             const pitch_reading = parseInt(item[4]);
             const roll_reading = parseInt(item[5]);
+            consolidatedData.push({ index, x_reading, y_reading, z_reading, yaw_reading, pitch_reading, roll_reading });
+          });
 
-            xAxisData.push(index);
-            xReading.push(x_reading);
-            yReading.push(y_reading);
-            zReading.push(z_reading);
-            yawReading.push(yaw_reading);
-            pitchReading.push(pitch_reading);
-            rollReading.push(roll_reading);
-          });
-          setGraphData({
-            xAxis: {
-              type: 'category',
-              data: xAxisData,
-            },
-            yAxis: {
-              type: 'value',
-            },
-            series: [
-              { data: xReading, name: 'acc_x', type: 'line' },
-              { data: yReading, name: 'acc_y', type: 'line' },
-              { data: zReading, name: 'acc_z', type: 'line' },
-              { data: yawReading, name: 'yaw', type: 'line' },
-              { data: pitchReading, name: 'pitch', type: 'line' },
-              { data: rollReading, name: 'roll', type: 'line' },
-            ],
-            tooltip: {
-              trigger: 'axis',
-            },
-          });
+          setGraphData(consolidatedData);
         }}
       />
-      {graphData && <ReactECharts style={{ height: 800 }} option={graphData} />}
+      <ResponsiveContainer width="80%" height={800}>
+        <LineChart data={graphData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis type="number" dataKey="index" domain={['auto', 'auto']} name="Index" />
+          <YAxis />
+          <Tooltip labelStyle={{ color: 'black' }} />
+          <Legend />
+          {ACCELEROMETER_READING.map((reading, index) => (
+            <Line
+              key={reading}
+              type="monotone"
+              isAnimationActive={false}
+              dataKey={reading}
+              stroke={LINE_COLOR_PALETTE[index]}
+              dot={false}
+            />
+          ))}
+          {GYROSCOPE_READING.map((reading, index) => (
+            <Line
+              key={reading}
+              type="monotone"
+              isAnimationActive={false}
+              dataKey={reading}
+              stroke={LINE_COLOR_PALETTE[index + 3]}
+              dot={false}
+            />
+          ))}
+          <Brush height={20} />
+        </LineChart>
+      </ResponsiveContainer>
     </Panel>
   );
 };

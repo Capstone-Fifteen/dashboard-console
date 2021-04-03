@@ -62,12 +62,12 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ delayData, emgData, acc
         </Row>
       )}
       <Row className="rowContainer">
-        {/*<Col md={12} sm={24}>*/}
-        {/*  <Card header="Rhythmic Performance Over Time">*/}
-        {/*    <TimeSeriesMultiLineChart data={delayData} />*/}
-        {/*  </Card>*/}
-        {/*</Col>*/}
-        <Col md={24} sm={24}>
+        <Col md={12} sm={24}>
+          <Card header="Rhythmic Performance Over Time">
+            <TimeSeriesMultiLineChart data={delayData} />
+          </Card>
+        </Col>
+        <Col md={12} sm={24}>
           <Card header="Fatigue Level Over Time">
             <TimeSeriesMultiLineChart data={emgData} reference={700} />
           </Card>
