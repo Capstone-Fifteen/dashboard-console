@@ -13,7 +13,7 @@ import {
   Timeline,
 } from 'rsuite';
 import Timer from 'react-compound-timer';
-import { set } from 'lodash';
+import { set, isEmpty } from 'lodash';
 import { CSVLink } from 'react-csv';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { danceMoves as defaultMoves, threeMoves } from '../../constant/DanceMove';
@@ -211,9 +211,11 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
           {renderTimeline()}
         </Col>
       </Row>
-      <CSVLink data={convertToCsv()} filename={new Date().getTime().toString()} enclosingCharacter={'`'}>
-        Download CSV
-      </CSVLink>
+      {!isEmpty(timeData) && (
+        <CSVLink data={convertToCsv()} filename={new Date().getTime().toString()} enclosingCharacter={''}>
+          Download Timestamp CSV
+        </CSVLink>
+      )}
     </Panel>
   );
 };
