@@ -84,7 +84,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
 
   const renderAddForm = () => (
     <div className="addFormContainer">
-      <InputGroup style={{ width: 406 }}>
+      <InputGroup style={{ width: 406, border: 0 }}>
         <DatePicker
           format="YYYY-MM-DD HH:mm:ss"
           value={startTime}
@@ -98,7 +98,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
             },
           ]}
         />
-        <InputGroup.Addon>To</InputGroup.Addon>
+        <InputGroup.Addon style={{ height: 34 }}>To</InputGroup.Addon>
         <DatePicker
           style={{ minWidth: 183 }}
           format="YYYY-MM-DD HH:mm:ss"

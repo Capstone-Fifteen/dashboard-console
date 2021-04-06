@@ -82,14 +82,14 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
           <AccuracyPieChart actualData={predictedData} expectedData={expectedPositionData} type="position" />
         )}
       </div>
-      {/*<Divider />*/}
-      {/*<div className="sectionContainer">*/}
-      {/*  <div className="textContainer">*/}
-      {/*    <span className="subTitle">Rhythmic Performance</span>*/}
-      {/*    <span className="title">{getDelayType(get(currentPredictedData, 'delay', null))}</span>*/}
-      {/*    <span className="subTitle">{get(currentPredictedData, 'delay', null) || 'No data'}</span>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
+      <Divider />
+      <div className="sectionContainer">
+        <div className="textContainer">
+          <span className="subTitle">Rhythmic Performance</span>
+          <span className="title">{getDelayType(get(currentPredictedData, 'delay', null))}</span>
+          <span className="subTitle">{get(currentPredictedData, 'delay', null) || 'No data'}</span>
+        </div>
+      </div>
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
