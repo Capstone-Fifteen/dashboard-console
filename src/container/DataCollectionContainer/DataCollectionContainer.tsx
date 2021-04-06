@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ButtonToolbar,
   Checkbox,
@@ -15,6 +15,7 @@ import {
 import Timer from 'react-compound-timer';
 import { set } from 'lodash';
 import { CSVLink } from 'react-csv';
+import { useSpeechSynthesis } from 'react-speech-kit';
 import { danceMoves as defaultMoves, threeMoves } from '../../constant/DanceMove';
 
 const DataCollectionContainer: React.FunctionComponent<any> = () => {
@@ -26,9 +27,14 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
   const [counter, setCounter] = useState(0);
   const [useThreeDanceMoves, setUseThreeDanceMoves] = useState(false);
   const [rounds, setRounds] = useState(3);
-  const [danceTime, setDanceTime] = useState(20000);
-  const [restTime, setRestTime] = useState(10000);
+  const [danceTime, setDanceTime] = useState(20);
+  const [restTime, setRestTime] = useState(10);
   const [timeData, setTimeData] = useState<any>({});
+
+  const { speak } = useSpeechSynthesis();
+
+  // eslint-disable-next-line
+  useEffect(() => speak({ text: displayText }), [displayText]);
 
   const danceMoves = useThreeDanceMoves ? threeMoves : defaultMoves;
   const numberOfDanceMoves = useThreeDanceMoves ? 3 : 9;
@@ -98,19 +104,17 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
               />
             </InputGroup>
             <InputGroup style={{ width: '20%' }}>
-              <InputGroup.Addon>Dance Time (ms)</InputGroup.Addon>
+              <InputGroup.Addon>Dance Time (s)</InputGroup.Addon>
               <InputNumber
-                min={1000}
-                step={1000}
+                min={10}
                 value={danceTime}
                 onChange={(value: any) => setDanceTime(parseInt(value.length > 0 ? value : '0'))}
               />
             </InputGroup>
             <InputGroup style={{ width: '20%' }}>
-              <InputGroup.Addon>Rest Time (ms)</InputGroup.Addon>
+              <InputGroup.Addon>Rest Time (s)</InputGroup.Addon>
               <InputNumber
-                min={1000}
-                step={1000}
+                min={10}
                 value={restTime}
                 onChange={(value: any) => setRestTime(parseInt(value.length > 0 ? value : '0'))}
               />
@@ -145,13 +149,13 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
                           setIsInitialized(false);
                           updateTimeData(counter, 'start');
                           setDisplayText(danceMoves[counter].move);
-                          setTimerTime(danceTime + restTime);
+                          setTimerTime(danceTime * 1000 + restTime * 1000);
                         },
                       },
                     ]
                   : [
                       {
-                        time: restTime,
+                        time: restTime * 1000,
                         callback: () => {
                           setDisplayText('Rest');
                           updateTimeData(counter, 'end');
@@ -166,7 +170,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
                             setDisplayText(danceMoves[(counter + 1) % numberOfDanceMoves].move);
                             updateTimeData(counter + 1, 'start');
                             setCounter((state) => state + 1);
-                            setTimerTime(danceTime + restTime);
+                            setTimerTime(danceTime * 1000 + restTime * 1000);
                           }
                         },
                       },
@@ -195,7 +199,7 @@ const DataCollectionContainer: React.FunctionComponent<any> = () => {
             </Timer>
           </div>
           <h3 style={{ textAlign: 'center' }}>{displayText}</h3>
-          <h3 style={{ textAlign: 'center', marginTop: 20 }}>Set {Math.floor(counter / numberOfDanceMoves + 1)}</h3>
+          <h3 style={{ textAlign: 'center', marginTop: 20 }}>Round {Math.floor(counter / numberOfDanceMoves + 1)}</h3>
         </Col>
         <Col
           sm={12}
