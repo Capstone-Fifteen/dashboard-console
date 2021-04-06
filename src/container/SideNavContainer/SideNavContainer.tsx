@@ -21,6 +21,7 @@ import {
 import ROUTES from '../../constant/Routes';
 import { useAppDispatch } from '../../redux/hook';
 import { clearSession } from '../../redux/reducer/authenticatedSlice';
+import packageJson from '../../../package.json';
 import './SideNavContainer.css';
 
 const SideNavContainer: React.FunctionComponent<any> = () => {
@@ -162,6 +163,7 @@ const SideNavContainer: React.FunctionComponent<any> = () => {
                 >
                   Sign Out
                 </Dropdown.Item>
+                <Dropdown.Item disabled>Version {packageJson.version}</Dropdown.Item>
               </Dropdown>
             </Nav>
           </Sidenav.Body>
