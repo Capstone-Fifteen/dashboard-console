@@ -26,19 +26,6 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
 
   const [showSensorReading, setShowSensorReading] = useState(false);
 
-  const getDelayType = (delay: number) => {
-    if (!delay) {
-      return 'No data';
-    }
-    if (delay > 0.5) {
-      return 'Fast';
-    }
-    if (delay < -0.5) {
-      return 'Slow';
-    }
-    return 'On Time';
-  };
-
   const getCurrentExpectedData = (expectedData: any[]) => {
     const dataLength = Math.min(predictedData.length, expectedData.length);
 
@@ -85,9 +72,8 @@ const IndividualAnalytics: React.FunctionComponent<Props> = ({
       <Divider />
       <div className="sectionContainer">
         <div className="textContainer">
-          <span className="subTitle">Rhythmic Performance</span>
-          <span className="title">{getDelayType(get(currentPredictedData, 'delay', null))}</span>
-          <span className="subTitle">{get(currentPredictedData, 'delay', null) || 'No data'}</span>
+          <span className="subTitle">Sync Delay (ms)</span>
+          <span className="title">{get(currentPredictedData, 'delay', 'No Data')}</span>
         </div>
       </div>
       <Divider />

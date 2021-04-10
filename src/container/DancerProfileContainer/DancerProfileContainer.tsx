@@ -155,7 +155,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
           </Card>
         </Col>
         <Col md={6} sm={8}>
-          <Card header="Average Rhythmic Performance">
+          <Card header="Average Sync Delay">
             <h4>{avgData['average_delay'].toFixed(2)} s</h4>
             <h6>{getDelayType(avgData['average_delay'])}</h6>
           </Card>
@@ -163,7 +163,7 @@ const DancerProfileContainer: React.FunctionComponent<any> = () => {
       </Row>
       <Row style={{ marginBottom: 10 }}>
         <Col md={12} sm={24}>
-          <Card header="Average Dance Accuracy Over Session">
+          <Card header="Average Sync Delay Over Session">
             <AccuracyLineChart
               data={sessionAggregateData}
               dataKey="moveAccuracy"
