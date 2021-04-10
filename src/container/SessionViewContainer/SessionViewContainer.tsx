@@ -44,7 +44,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   };
 
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
-    variables: endTime ? variables : streamingVariables,
+    variables: endTime ? { ...variables, order: 'asc' } : streamingVariables,
     skip: loading,
   });
 
