@@ -13,8 +13,8 @@ import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDat
 import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionByPkMutation';
 import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
-import './SessionViewContainer.css';
 import DataLoader from '../../component/DataLoader';
+import './SessionViewContainer.css';
 
 const SessionViewContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
@@ -26,6 +26,8 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   });
 
   const sessionInfo = get(sessionData, 'sessionInfo', null);
+
+  const endTime = sessionInfo && sessionInfo['end_time'];
 
   const variables = !loading && {
     deviceId: sessionInfo['participants'].map((value: any) => value.device.id),
@@ -130,6 +132,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
               dancer['expected_positions'].length > 0 &&
               dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
             }
+            showBrush={!!endTime}
           />
         </Panel>
       </Col>
