@@ -12,6 +12,7 @@ import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscriptio
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionByPkMutation';
 import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
+import LAST_POSITION_SUBSCRIPTION from '../../graphql/subscription/LastPositionSubscription';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
 import DataLoader from '../../component/DataLoader';
 import './SessionViewContainer.css';
@@ -35,19 +36,32 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
     endTime: sessionInfo['end_time'],
   };
 
+  // During real-time streaming we only want the last 600 data-points
+  const streamingVariables = {
+    ...variables,
+    order: 'desc',
+    limit: 600,
+  };
+
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? variables : streamingVariables,
     skip: loading,
   });
 
   const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? variables : streamingVariables,
+    skip: loading,
+  });
+
+  const { data: lastPositionSubscription } = useSubscription(LAST_POSITION_SUBSCRIPTION, {
+    variables: endTime ? variables : streamingVariables,
     skip: loading,
   });
 
   const rawData = get(rawDataSubscription, 'raw_data', []);
   const predictedData = get(predictedDataSubscription, 'predicted_data', []);
   const dancerData = get(sessionInfo, 'participants', []);
+  const lastPositionData = get(lastPositionSubscription, 'predicted_data', []);
 
   const expectedDeviceData = dancerData.map((data: any) => ({
     ...data,
@@ -119,9 +133,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   }
 
   const renderIndividualAnalytics = () => {
-    return dancerData.map((dancer: any, index: number) => (
+    // Sort dancer by device ID
+    const sortedDancerData = [...dancerData].sort((a: any, b: any) => a.device.id - b.device.id);
+
+    return sortedDancerData.map((dancer: any, index: number) => (
       <Col md={24 / dancerData.length} sm={24} key={index}>
-        <Panel bordered header={dancer['dancer']['name']}>
+        <Panel bordered header={`${dancer['dancer']['name']} (${dancer['device']['id']})`}>
           <IndividualAnalytics
             predictedData={predictedData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
             rawData={rawData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
@@ -168,7 +185,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
       </Panel>
       <Panel header={<h4>Team Analytics</h4>} collapsible defaultExpanded>
         {rawData.length > 0 || predictedData.length > 0 ? (
-          <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
+          <TeamAnalytics
+            accuracyData={accuracyData}
+            emgData={emgData}
+            delayData={delayData}
+            lastPositionData={lastPositionData}
+          />
         ) : (
           <DataLoader />
         )}

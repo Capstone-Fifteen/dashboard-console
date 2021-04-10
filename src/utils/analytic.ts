@@ -39,7 +39,7 @@ export const getDelayData = (expectedDeviceData: any[], predictedData: any[], se
   });
 
 /**
- * Convets expected data to appropriate accuracy data format
+ * Converts expected data to appropriate accuracy data format
  * @param expectedDeviceData
  * @param predictedData
  * @param session
