@@ -6,7 +6,7 @@ import { get, last, meanBy } from 'lodash';
 import { isoDateTimeFormatter } from '../../utils/numeric';
 import IndividualAnalytics from '../../component/IndividualAnalytics';
 import TeamAnalytics from '../../component/TeamAnalytics';
-import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
+import { getAccuracyData, getDelayData, getEmgData, getTeamAccuracy } from '../../utils/analytic';
 import SESSION_BY_PK_QUERY from '../../graphql/query/SessionByPkQuery';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
@@ -73,6 +73,8 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   const delayData = getDelayData(expectedDeviceData, predictedData, true);
 
   const accuracyData = getAccuracyData(expectedDeviceData, predictedData, true);
+
+  const teamAccuracy = getTeamAccuracy(expectedDeviceData, predictedData);
 
   const getDancerAnalytics = () => {
     const dancerId = expectedDeviceData
@@ -190,6 +192,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
             emgData={emgData}
             delayData={delayData}
             lastPositionData={lastPositionData}
+            teamAccuracy={teamAccuracy}
           />
         ) : (
           <DataLoader />

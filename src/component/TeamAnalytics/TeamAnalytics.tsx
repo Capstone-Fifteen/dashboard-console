@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Grid, Row } from 'rsuite';
 import AccuracyBarChart from '../AccuracyBarChart';
 import TimeSeriesMultiLineChart from '../TimeSeriesMultiLineChart';
+import AccuracyPieChart from '../AccuracyPieChart';
 import Card from '../Card';
 import './TeamAnalytics.css';
 
@@ -10,9 +11,16 @@ interface Props {
   emgData: any[];
   accuracyData: any[];
   lastPositionData?: any[];
+  teamAccuracy?: any;
 }
 
-const TeamAnalytics: React.FunctionComponent<Props> = ({ delayData, emgData, accuracyData, lastPositionData }) => {
+const TeamAnalytics: React.FunctionComponent<Props> = ({
+  delayData,
+  emgData,
+  accuracyData,
+  lastPositionData,
+  teamAccuracy,
+}) => {
   const moveAccuracy = accuracyData.map((data) => data.moveAccuracy).filter((dancer) => dancer.data?.length > 0);
   const positionAccuracy = accuracyData
     .map((data) => data.positionAccuracy)
@@ -29,6 +37,20 @@ const TeamAnalytics: React.FunctionComponent<Props> = ({ delayData, emgData, acc
           <Col md={24} sm={24}>
             <Card header="Current Position">
               <h3>{positionData.join(' ')}</h3>
+            </Card>
+          </Col>
+        </Row>
+      )}
+      {teamAccuracy && (
+        <Row className="rowContainer">
+          <Col md={12} sm={24}>
+            <Card header="Overall Move Accuracy">
+              <AccuracyPieChart positiveValue={teamAccuracy.moveAccuracy} />
+            </Card>
+          </Col>
+          <Col md={12} sm={24}>
+            <Card header="Overall Position Accuracy">
+              <AccuracyPieChart positiveValue={teamAccuracy.positionAccuracy} />
             </Card>
           </Col>
         </Row>

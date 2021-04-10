@@ -24,7 +24,7 @@ import TeamAnalytics from '../../component/TeamAnalytics';
 import DataLoader from '../../component/DataLoader';
 import EditDancerModal from './EditDancerModal';
 import { get } from 'lodash';
-import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
+import { getAccuracyData, getDelayData, getEmgData, getTeamAccuracy } from '../../utils/analytic';
 import './DashboardContainer.css';
 
 const DashboardContainer: React.FunctionComponent<any> = () => {
@@ -81,6 +81,8 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
   const delayData = getDelayData(expectedDeviceData, predictedData);
 
   const accuracyData = getAccuracyData(expectedDeviceData, predictedData);
+
+  const teamAccuracy = getTeamAccuracy(expectedDeviceData, predictedData);
 
   const renderAddForm = () => (
     <div className="addFormContainer">
@@ -220,6 +222,7 @@ const DashboardContainer: React.FunctionComponent<any> = () => {
               emgData={emgData}
               accuracyData={accuracyData}
               lastPositionData={lastPositionData}
+              teamAccuracy={teamAccuracy}
             />
           ) : (
             <DataLoader />
