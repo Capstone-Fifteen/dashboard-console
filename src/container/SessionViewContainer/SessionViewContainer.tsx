@@ -6,15 +6,16 @@ import { get, last, meanBy } from 'lodash';
 import { isoDateTimeFormatter } from '../../utils/numeric';
 import IndividualAnalytics from '../../component/IndividualAnalytics';
 import TeamAnalytics from '../../component/TeamAnalytics';
-import { getAccuracyData, getDelayData, getEmgData } from '../../utils/analytic';
+import { getAccuracyData, getDelayData, getEmgData, getTeamAccuracy } from '../../utils/analytic';
 import SESSION_BY_PK_QUERY from '../../graphql/query/SessionByPkQuery';
 import RAW_DATA_SUBSCRIPTION from '../../graphql/subscription/RawDataSubscription';
 import PREDICTED_DATA_SUBSCRIPTION from '../../graphql/subscription/PredictedDataSubscription';
 import UPDATE_SESSION_BY_PK_MUTATION from '../../graphql/mutation/UpdateSessionByPkMutation';
 import ADD_DANCER_ANALYTIC_MUTATION from '../../graphql/mutation/AddDancerAnalyticMutation';
+import LAST_POSITION_SUBSCRIPTION from '../../graphql/subscription/LastPositionSubscription';
 import ALL_SESSION_QUERY from '../../graphql/query/AllSessionQuery';
-import './SessionViewContainer.css';
 import DataLoader from '../../component/DataLoader';
+import './SessionViewContainer.css';
 
 const SessionViewContainer: React.FunctionComponent<any> = () => {
   const { id } = useParams<any>();
@@ -27,25 +28,40 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
 
   const sessionInfo = get(sessionData, 'sessionInfo', null);
 
+  const endTime = sessionInfo && sessionInfo['end_time'];
+
   const variables = !loading && {
     deviceId: sessionInfo['participants'].map((value: any) => value.device.id),
     startTime: sessionInfo['start_time'],
     endTime: sessionInfo['end_time'],
   };
 
+  // During real-time streaming we only want the last 600 data-points
+  const streamingVariables = {
+    ...variables,
+    order: 'desc',
+    limit: 600,
+  };
+
   const { data: rawDataSubscription } = useSubscription(RAW_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? { ...variables, order: 'asc' } : streamingVariables,
     skip: loading,
   });
 
   const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
-    variables,
+    variables: endTime ? variables : streamingVariables,
+    skip: loading,
+  });
+
+  const { data: lastPositionSubscription } = useSubscription(LAST_POSITION_SUBSCRIPTION, {
+    variables: endTime ? variables : streamingVariables,
     skip: loading,
   });
 
   const rawData = get(rawDataSubscription, 'raw_data', []);
   const predictedData = get(predictedDataSubscription, 'predicted_data', []);
   const dancerData = get(sessionInfo, 'participants', []);
+  const lastPositionData = get(lastPositionSubscription, 'predicted_data', []);
 
   const expectedDeviceData = dancerData.map((data: any) => ({
     ...data,
@@ -57,6 +73,8 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   const delayData = getDelayData(expectedDeviceData, predictedData, true);
 
   const accuracyData = getAccuracyData(expectedDeviceData, predictedData, true);
+
+  const teamAccuracy = getTeamAccuracy(expectedDeviceData, predictedData);
 
   const getDancerAnalytics = () => {
     const dancerId = expectedDeviceData
@@ -117,9 +135,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   }
 
   const renderIndividualAnalytics = () => {
-    return dancerData.map((dancer: any, index: number) => (
+    // Sort dancer by device ID
+    const sortedDancerData = [...dancerData].sort((a: any, b: any) => a.device.id - b.device.id);
+
+    return sortedDancerData.map((dancer: any, index: number) => (
       <Col md={24 / dancerData.length} sm={24} key={index}>
-        <Panel bordered header={dancer['dancer']['name']}>
+        <Panel bordered header={`${dancer['dancer']['name']} (${dancer['device']['id']})`}>
           <IndividualAnalytics
             predictedData={predictedData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
             rawData={rawData.filter((value: any) => value['device_id'] === dancer['device']['id'])}
@@ -130,6 +151,7 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
               dancer['expected_positions'].length > 0 &&
               dancer['expected_positions'].split(',').map((i: string) => parseInt(i.trim()))
             }
+            showBrush={!!endTime}
           />
         </Panel>
       </Col>
@@ -165,7 +187,13 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
       </Panel>
       <Panel header={<h4>Team Analytics</h4>} collapsible defaultExpanded>
         {rawData.length > 0 || predictedData.length > 0 ? (
-          <TeamAnalytics accuracyData={accuracyData} emgData={emgData} delayData={delayData} />
+          <TeamAnalytics
+            accuracyData={accuracyData}
+            emgData={emgData}
+            delayData={delayData}
+            lastPositionData={lastPositionData}
+            teamAccuracy={teamAccuracy}
+          />
         ) : (
           <DataLoader />
         )}

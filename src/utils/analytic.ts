@@ -1,4 +1,4 @@
-import { mean } from 'lodash';
+import { mean, min } from 'lodash';
 
 /**
  * Converts expected data to appropriate emg data format
@@ -39,7 +39,80 @@ export const getDelayData = (expectedDeviceData: any[], predictedData: any[], se
   });
 
 /**
- * Convets expected data to appropriate accuracy data format
+ * Calculates team's overall position and dance accuracy
+ * @param expectedDeviceData
+ * @param predictedData
+ */
+export const getTeamAccuracy = (expectedDeviceData: any[], predictedData: any[]) => {
+  // Check if expected data exists for all dancers; short-circuit and return undefined if there's one dancer
+  // without expected data
+  for (let i = 0; i < expectedDeviceData.length; i++) {
+    if (!expectedDeviceData[i]['expected_moves'] || !expectedDeviceData[i]['expected_positions']) {
+      return undefined;
+    }
+  }
+
+  // Hash map for faster device data access
+  const expectedDataObject: any = {};
+
+  let positionAccuracyCounter = 0;
+  let moveAccuracyCounter = 0;
+
+  // Populate device data hash map
+  expectedDeviceData.forEach(({ device_id, expected_moves, expected_positions }) => {
+    const predictedDataForDevice = predictedData.filter((data) => data['device_id'] === device_id);
+
+    expectedDataObject[device_id] = {
+      expected_moves,
+      expected_positions,
+      predictedDataForDevice,
+    };
+  });
+
+  // Use the minimum data length as the max iteration
+  const dataLength =
+    min(expectedDeviceData.map(({ device_id }) => expectedDataObject[device_id].predictedDataForDevice.length)) || 0;
+
+  // TODO: Optimize this calculation
+  for (let i = 0; i < dataLength; i++) {
+    let moveFlag = true;
+    let positionFlag = true;
+
+    expectedDeviceData.forEach(({ device_id: id, expected_moves, expected_positions }) => {
+      const predictedDanceMove = expectedDataObject[id]['predictedDataForDevice'][dataLength - i - 1]['dance_move'];
+      const predictedDancePosition =
+        expectedDataObject[id]['predictedDataForDevice'][dataLength - i - 1]['dance_position'];
+
+      const expectedDanceMoves =
+        expected_moves.length > 0 && expected_moves.split(',').map((move: string) => move.trim());
+
+      const expectedDancePositions =
+        expected_positions.length > 0 &&
+        expected_positions.split(',').map((position: string) => parseInt(position.trim()));
+
+      if (expectedDanceMoves[i] !== predictedDanceMove) {
+        moveFlag = false;
+      }
+
+      if (expectedDancePositions[i] !== predictedDancePosition) {
+        positionFlag = false;
+      }
+    });
+
+    if (moveFlag) {
+      moveAccuracyCounter++;
+    }
+
+    if (positionFlag) {
+      positionAccuracyCounter++;
+    }
+  }
+
+  return { moveAccuracy: moveAccuracyCounter / dataLength, positionAccuracy: positionAccuracyCounter / dataLength };
+};
+
+/**
+ * Converts expected data to appropriate accuracy data format
  * @param expectedDeviceData
  * @param predictedData
  * @param session
