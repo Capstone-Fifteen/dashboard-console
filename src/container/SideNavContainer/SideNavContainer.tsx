@@ -25,7 +25,7 @@ import packageJson from '../../../package.json';
 import './SideNavContainer.css';
 
 const SideNavContainer: React.FunctionComponent<any> = () => {
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(false);
   const [selectedPanel, setSelectedPanel] = useState('dashboard');
   const dispatch = useAppDispatch();
 
