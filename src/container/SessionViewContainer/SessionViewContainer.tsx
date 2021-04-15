@@ -49,12 +49,12 @@ const SessionViewContainer: React.FunctionComponent<any> = () => {
   });
 
   const { data: predictedDataSubscription } = useSubscription(PREDICTED_DATA_SUBSCRIPTION, {
-    variables: endTime ? variables : streamingVariables,
+    variables: variables,
     skip: loading,
   });
 
   const { data: lastPositionSubscription } = useSubscription(LAST_POSITION_SUBSCRIPTION, {
-    variables: endTime ? variables : streamingVariables,
+    variables: variables,
     skip: loading,
   });
 
