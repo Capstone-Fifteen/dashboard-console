@@ -10,11 +10,11 @@ The project also requires the following dependencies:
 2. [Yarn](https://yarnpkg.com/)
 
 ## Steps
-1. Start the backend system
-2. In the '.env' file, put in the GraphQL secret
-3. Run `yarn install` to fetch required React dependencies
+1. Start the backend system.
+2. In the '.env' file, replace `SECRET_HERE` with the GraphQL secret of the backend system.
+3. Run `yarn install` to fetch required React dependencies.
 4. Run `yarn start` to start the app.
-5. Launch the app on your browser at http://localhost:3000 
+5. Launch the app on your browser at http://localhost:3000.
 6. The admin secret of the app is the same as the GraphQL's admin secret.
 
 ## Available Scripts
